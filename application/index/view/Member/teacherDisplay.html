@@ -1,0 +1,80 @@
+
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+<section id="about-us">
+    <div class="container">
+        <div class="team">
+            <!-- our teacher -->
+            <div class="row clearfix" style="padding-top:100px;">
+             <center>
+                <!--{list id="23" page="1" pagesize="1"}-->
+                {volist name="teacher" id="vo"}
+               
+                    <table>
+                      <tr>
+                      <td rowspan="4"><a href=""><img src="{$vo.pic}"   style="height:200px;padding-right:20px;padding-top:10px"/></a>
+                      </td>
+                      <td >
+                        <table class="sub_table">
+                          <tr>
+                            <td class="name"><a href="{:url('Member/teacherDispaly',array('id'=>$vo.id))}">{$vo.name}</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                            <hr style="width:600px"/>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="brief"><p>{$vo.title}</p></a>
+                            </td>
+                          </tr>
+                          <tr>
+                          <td><hr style="width:600px"/></td>
+                          </tr>
+                          <tr>
+                            <td class="brief"><p>{$vo.area}</p></a>
+                            </td>
+                          </tr>
+                           <tr>   
+                        </table>
+                       
+                      </td>
+                      </tr>
+                    </table>
+            </div> <!--/.row -->
+            <hr align=center width=70% color=#987cb9 size=1>
+             <div class="title title1" style="margin-left:200px">
+                 <div class="content">
+              <p  style="text-indent:2em;">
+                {$vo.achievement}
+             </p>
+             </div>
+             </div>
+            </div>
+              {/volist}
+            </center>
+       
+        
+
+           
+
+            <div class="row clearfix">
+                <!--{list id="16" page="1" pagesize="4"}-->
+                <div class="col-md-4 col-sm-6 ">
+               
+            </div>  <!--/.row-->
+        </div><!--/.our-teacher-->
+
+
+    </div><!--/.container-->
+    </div>
+</section><!--/about-us-->
+
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+
+</body>
+</html>

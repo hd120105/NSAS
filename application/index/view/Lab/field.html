@@ -1,0 +1,33 @@
+
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+ <section id="research" class="transparent-bg">
+        <div class="container">
+            <div class="center wow fadeInDown" style="margin-top: 40px">
+                <h2>科研小组</h2>
+                <p>实验室下设三个小组：网络管理与安全研究小组、网络应用开发小组、嵌入式功耗研究小组</p>
+            </div>
+
+            <div class="row">
+               {volist name="field" id="r"}
+                <div class="col-md-4 wow fadeInDown">
+                    <div class="clients-comments text-center single-profile-top">
+
+                        <img src="{$r.fileurl}" class="img-circle" alt="">
+                        <h3>{$r['name']}</h3>
+                        <p style="text-indent: 28px">{$r['introduce']}</p>
+                    </div>
+
+                </div>
+               {/volist}
+
+            </div>
+
+        </div><!--/.container-->
+    </section><!--/#feature-->
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

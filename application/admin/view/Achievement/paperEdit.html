@@ -1,0 +1,99 @@
+{include file="public/toper" /}
+<style>
+  .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 1px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 30px;
+}
+.file_input{
+    height:38px;
+    border: 1px solid #e2e2e2
+}
+.layui-upload-button{
+    display:none;
+}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <div class="layui-tab-content">
+      {volist name="paper" id="vo"}
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" style="width:300px;" id="title" value="{$vo.title}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">参与者</label>
+        <div class="layui-input-block">
+          <input type="participator" name="participator" lay-verify="participator" autocomplete="off" placeholder="请输入参与者" class="layui-input" style="width:300px;" id="participator" value="{$vo.participator}">
+        </div>
+      </div>
+         <div class="layui-form-item">
+        <label class="layui-form-label">会议/期刊</label>
+        <div class="layui-input-inline">
+          <input type="text" name="periodical" id="periodical"  placeholder="会议/期刊" autocomplete="off" class="layui-input" value="{$vo.periodical}">
+        </div>
+      </div>
+     <div class="layui-form-item">
+        <label class="layui-form-label">检索级别</label>
+        <div class="layui-input-block">
+          <input type="text" name="level"  autocomplete="off" placeholder="请输入检索级别" class="layui-input" style="width:300px;" id="level" value="{$vo.level}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">知网地址</label>
+        <div class="layui-input-inline">
+          <input type="text" name="detailed" id="detailed" placeholder="知网地址" autocomplete="off" class="layui-input"  value="{$vo.detailed}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="" lay-filter="paper_edit" id="{$vo.id}">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+    {/volist}
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+    UE.getEditor('abstract'); 
+</script> 
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+var element = layui.element()
+,form = layui.form()
+,layedit = layui.layedit
+,laydate = layui.laydate
+,$ = layui.jquery;
+//监听提交
+form.on('submit(paper_edit)', function(data){
+  var param = data.field;
+  param['id']   = $(this).attr('id');
+  var index =  parent.layer.getFrameIndex(window.name); 
+   console.log(JSON.stringify(param));
+  $.post('{:url("Achievement/paperEdit")}',param,function(data){
+    if(data.code == 200){
+      layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+      parent.layer.close(index);
+      parent.location.href="{:url('Achievement/paperList')}";
+    });}else{
+      layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+    }
+  });
+  return false;
+});
+})
+</script>
+{include file="public/footer" /}

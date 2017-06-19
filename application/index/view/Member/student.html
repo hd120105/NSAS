@@ -1,0 +1,150 @@
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+<section id="about-us">
+    <div class="container">
+        <div class="team">
+            <div class="center wow fadeInDown"  style="margin-top: 40px">
+                <h2>在读学生</h2>
+            </div>
+
+            <!-- 博士 -->
+            <div class="wow fadeInDown">
+                <i class="fa fa-mortar-board mark"></i>
+                <i class="font">博士</i>
+            </div>
+            <div class="row clearfix">
+                <!--{list id="19" page="1" pagesize="8"}-->
+                {volist name="Doctor" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+                    <div class="single-profile-bottom wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="media">
+                            <div class="pull-left">
+                                <a href="#"><img class="media-object" src="{$vo.pic}"  alt="" style="height:200px; width:150px"></a>
+                            </div>
+                            <div class="media-body">
+                                <h4>{$vo.name}</h4>
+                                <h4>{$vo.major}</h4>
+                                <h4>{$vo.area}</h4>
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo.email}</span></li>
+                                </ul>
+                            </div>
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+                </div>
+                {/volist}
+                <!--{/list}-->
+            </div><!--./博士-->
+
+            <!-- 硕士三年级 -->
+            <div class="wow fadeInDown">
+                <i class="fa fa-mortar-board mark"></i>
+                <i class="font">硕士三年级</i>
+            </div>
+            <div class="row clearfix">
+                <!--{list id="20" page="1" pagesize="15"}-->
+                {volist name="Master3" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+                    <div class="single-profile-bottom wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="media">
+                            <div class="pull-left">
+                                <a href="#"><img class="media-object" src="{$vo.pic}"  alt="" style="height:200px; width:150px"></a>
+                            </div>
+                            <div class="media-body">
+                                <h4>{$vo.name}</h4>
+                                <h4>{$vo.major}</h4>
+                                <h4>{$vo.area}</h4>
+
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo.email}</span></li>
+                                </ul>
+                            </div>
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+                </div>
+                {/volist}
+                <!--{/list}-->
+            </div><!--./硕士三年级-->
+
+            <!-- 硕士二年级-->
+            <div class="wow fadeInDown">
+                <i class="fa fa-mortar-board mark"></i>
+                <i class="font">硕士二年级</i>
+            </div>
+            <div class="row clearfix">
+                <!--{list id="21" page="1" pagesize="15"}-->
+                {volist name="Master2" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+                    <div class="single-profile-bottom wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="media">
+                            <div class="pull-left">
+                                <a href="#"><img class="media-object" src="{$vo.pic}"  alt="" style="height:200px; width:150px"></a>
+                            </div>
+                            <div class="media-body">
+                                <h4>{$vo.name}</h4>
+                                <h4>{$vo.major}</h4>
+                                <h4>{$vo.area}</h4>
+
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo.email}</span></li>
+                                </ul>
+                            </div>
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+                </div>
+                {/volist}
+                <!--{/list}-->
+            </div><!--./硕士二年级-->
+
+            <!-- 硕士一年级-->
+            <div class="wow fadeInDown">
+                <i class="fa fa-mortar-board mark"></i>
+                <i class="font">硕士一年级</i>
+            </div>
+            <div class="row clearfix">
+                <!--{list id="22" page="1" pagesize="15"}-->
+               
+               {volist name="Master1" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+                    <div class="single-profile-bottom wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="media">
+                            <div class="pull-left">
+                                <a href="#"><img class="media-object" src="{$vo.pic}"  alt="" style="height:200px; width:150px"></a>
+                            </div>
+                            <div class="media-body">
+                                <h4>{$vo.name}</h4>
+                                <h4>{$vo.major}</h4>
+                                <h4>{$vo.area}</h4>
+
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo.email}</span></li>
+                                </ul>
+                            </div>
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+                </div>
+                {/volist}
+                <!--{/list}-->
+            </div><!--./硕士一年级-->
+        </div>
+    </div><!--/.our-student-->
+</section>
+
+
+
+
+
+
+
+
+
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

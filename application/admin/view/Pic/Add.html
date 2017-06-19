@@ -1,0 +1,446 @@
+ 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>百度上传控件</title>
+<link href="__PUBLIC__/webuploader/picstyle.css" rel="stylesheet" />
+<link href="__PUBLIC__/webuploader/webuploader.css" rel="stylesheet" />
+<link href="__PUBLIC__/webuploader/demo.css" rel="stylesheet" />
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css">
+<script src="__PUBLIC__/js/jquery-1.11.1.min.js"></script>
+<script src="__PUBLIC__/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript">
+jQuery(function () {
+  layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$jl = layui.jquery;
+   var  picSrc="";
+    //定义参数
+    var $ = jQuery,
+    $wrap = $('#uploader'),
+    $queue = $('<ul class="filelist"></ul>')
+    .appendTo($wrap.find('.queueList')),
+    fileCount = 0,
+    fileSize = 0,
+    ratio = window.devicePixelRatio || 1,
+    // 缩略图大小
+    thumbnailWidth = 110 * ratio,
+    thumbnailHeight = 110 * ratio,
+    percentages = {},
+    //是否支持旋转
+    supportTransition = (function () {
+    var s = document.createElement('p').style,
+    r = 'transition' in s ||
+    'WebkitTransition' in s ||
+    'MozTransition' in s ||
+    'msTransition' in s ||
+    'OTransition' in s;
+    s = null;
+    return r;
+    })(),
+    state = 'pedding',
+    //上传按钮
+    $upload = $wrap.find('.uploadBtn'),
+    errMsg = '上传失败，请重试';
+    uploader;
+
+    //实例化
+    uploader = WebUploader.create({
+    pick: {
+    id: '#filePicker',
+    label: '点击选择文件'
+    },
+    fileNumLimit:1,
+    accept: {
+    title: 'myself',
+    extensions: 'gif,jpg,jpeg,bmp,png,pdf,doc,docx',
+    mimeTypes: 'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    },
+
+    // swf文件路径
+    swf: '__PUBLIC__/webuploader/Uploader.swf',
+    
+    server: '{:url("Pic/upload")}',
+    duplicate: true
+
+    });
+
+    function setState(val) {
+    var file, stats;
+
+    if (val === state) {
+      return;
+    }
+
+    $upload.removeClass('state-' + state);
+    $upload.addClass('state-' + val);
+    state = val;
+
+    switch (state) {
+    case 'pedding':      //待定
+        $queue.parent().removeClass('filled');
+        $queue.hide();
+        uploader.refresh();
+    break;
+
+    case 'ready':
+        $('#filePicker').removeClass('element-invisible');
+        $queue.parent().addClass('filled');
+        $queue.show();
+
+        uploader.refresh();
+    break;
+
+    case 'uploading':
+        $('#filePicker').addClass('element-invisible');
+
+        $upload.text('暂停上传');
+        break;
+
+        case 'paused':
+
+        $upload.text('继续上传');
+    break;
+
+    case 'confirm':
+
+        $upload.text('开始上传').addClass('disabled');
+
+        stats = uploader.getStats();
+        if (stats.successNum && !stats.uploadFailNum) {
+            setState('finish');
+            return;
+        }
+    break;
+    case 'finish'://返回上传信息
+        stats = uploader.getStats();
+        if (stats.successNum) {
+            console.log(stats);
+            layer.msg("上传成功", {icon: 1, time: 1000})
+        } else {
+        // 没有成功的图片，重设
+            state = 'done';
+            location.reload();
+        }
+    break;
+    }
+
+    if (state != "ready") {
+        $('#filePicker').removeClass('element-invisible');
+
+        $upload.text('开始上传').removeClass('disabled');
+    }
+    }
+
+    function addFile(file) {
+    var $li = $('<li id="' + file.id + '">' +
+    '<p class="title">' + file.name + '</p>' +
+    '<p class="imgWrap"></p>' +
+    '<p class="progress"><span></span></p>' +
+    '</li>'),
+
+    $btns = $('<div class="file-panel">' +
+    '<span class="cancel">删除</span>' +
+    '<span class="rotateRight">向右旋转</span>' +
+    '<span class="rotateLeft">向左旋转</span></div>').appendTo($li),
+    $prgress = $li.find('p.progress span'),
+    $wrap = $li.find('p.imgWrap'),
+    $info = $('<p class="error"></p>'),
+
+    showError = function (code) {
+    switch (code) {
+    case 'exceed_size':
+      text = '文件大小超出';
+    break;
+
+    case 'interrupt':
+      text = '上传暂停';
+    break;
+
+    default:
+
+       text = errMsg;;
+    break;
+    }
+    $info.text(text).appendTo($li);
+};
+
+
+
+    //1.生成缩略图
+    if (file.getStatus() === 'invalid') {  //不合格
+      showError(file.statusText);
+    } else {
+        // @todo lazyload
+        $wrap.text('预览中');
+        uploader.makeThumb(file, function (error, src) {
+    if (error) {
+        $wrap.text('不能预览');
+        return;
+    }
+
+    var img = $('<img src="' + src + '">');
+    $wrap.empty().append(img);
+    }, thumbnailWidth, thumbnailHeight);
+
+    percentages[file.id] = [file.size, 0];
+    file.rotation = 0;
+    }
+    //2.文件状态变化
+    file.on('statuschange', function (cur, prev) {
+    //前一个状态
+    if (prev === 'progress') {             //上传中
+        $prgress.hide().width(0);
+    }
+    else if (prev === 'queued') {          //进入队列,等待上传
+        $li.off('mouseenter mouseleave');
+        $btns.remove();
+    }
+
+    // 成功
+    if (cur === 'error' || cur === 'invalid') {    //失败不合格
+        showError(file.statusText);
+        percentages[file.id][1] = 1;
+    } else if (cur === 'interrupt') {           //暂停
+        showError('interrupt');
+    } else if (cur === 'queued') {              //队列中
+        percentages[file.id][1] = 0;
+    } else if (cur === 'progress') {            //上传中
+        $info.remove();
+        $prgress.css('display', 'block');
+    } else if (cur === 'complete') {            //上传完成
+        $li.append('<span class="success"></span>');
+    }
+
+    $li.removeClass('state-' + prev).addClass('state-' + cur);
+    });
+    //3.缩略图标签 旋转删除
+    $li.on('mouseenter', function () {
+        $btns.stop().animate({ height: 30 });
+    });
+
+    $li.on('mouseleave', function () {
+    $btns.stop().animate({ height: 0 });
+    });
+    $btns.on('click', 'span', function () {
+    var index = $(this).index(),
+    deg;
+
+    switch (index) {
+    case 0:
+    uploader.removeFile(file);
+    return;
+
+    case 1:
+    file.rotation += 90;
+    break;
+
+    case 2:
+    file.rotation -= 90;
+    break;
+    }
+
+    if (supportTransition) {
+    deg = 'rotate(' + file.rotation + 'deg)';
+    $wrap.css({
+        '-webkit-transform': deg,
+        '-mos-transform': deg,
+        '-o-transform': deg,
+        'transform': deg
+    });
+    } else {
+         $wrap.css('filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation=' + (~~((file.rotation / 90) % 4 + 4) % 4) + ')');
+
+    }
+    });
+
+    $li.appendTo($queue);
+    }
+
+    function removeFile(file) {
+        var $li = $('#' + file.id);
+        delete percentages[file.id];
+        $li.off().find('.file-panel').off().end().remove();
+    }
+
+
+    uploader.onUploadProgress = function (file, percentage) {
+        var $li = $('#' + file.id),
+        $percent = $li.find('.progress span');
+
+        $percent.css('width', percentage * 100 + '%');
+        percentages[file.id][1] = percentage;
+    };
+
+    uploader.onFileQueued = function (file) {
+    fileCount++;
+    fileSize += file.size;
+
+    addFile(file);
+    setState('ready');
+    };
+
+    uploader.onFileDequeued = function (file) {
+    fileCount--;
+    fileSize -= file.size;
+
+    if (!fileCount) {
+       setState('pedding');
+    }
+
+    removeFile(file);
+
+
+    };
+
+    uploader.on('all', function (type) {
+    var stats;
+    switch (type) {
+    case 'uploadFinished':
+    setState('confirm');
+    break;
+
+    case 'startUpload':
+    setState('uploading');
+    break;
+
+    case 'stopUpload':
+    setState('paused');
+    break;
+
+    }
+    });
+
+    uploader.onError = function (code) {
+    alert('Eroor: ' + code);
+    };
+
+    uploader.on('uploadAccept', function (file, response) {
+
+
+    var hasError = (response["result"] === "error");
+
+    if (hasError) {
+    // 通过return false来告诉组件，此文件上传有错。
+
+    errMsg = response['error']["message"];
+    return false;
+    } else {
+
+    }
+    });
+    uploader.on( 'uploadSuccess', function( file,response) {
+    picSrc=response['src'];    //上传图片路径
+    console.log(picSrc);
+
+    });
+
+    uploader.on('uploadBeforeSend', function (file, data) {
+    data.opr = 'newupload';
+    data.type = $("#hidtype").val();
+    data.pid = $("#hidpid").val();
+
+    });
+
+
+    //上传按钮
+    $upload.on('click', function () {
+    if ($(this).hasClass('disabled')) {
+    return false;
+    }
+
+    if (state === 'ready') {
+    uploader.upload();
+    } else if (state === 'paused') {
+    uploader.upload();
+    } else if (state === 'uploading') {
+    uploader.stop();
+    }
+    });
+
+    $upload.addClass('state-' + state);
+
+    $("#pic_add").click(function(){
+    var desc = $("#desc").val();
+    var url  =  picSrc;
+    var type = $("#typeSelected").val();
+    var index =  parent.layer.getFrameIndex(window.name);
+    if(url=="")
+    {
+    layer.msg('您的图片还没上传', {icon: 5, time: 1000}, function(){
+    $("#uploadBtn").focus();
+    });
+    return false;
+    }
+    var data={
+    "desc"   :desc,
+    "picurl" :url,
+    "type"   :type
+    }
+    $.post('{:url("Pic/Add")}',data,function(data){
+    var type = $('#typeSelected').val();
+    if(data.code == 200){
+    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+    parent.layer.close(index);
+    if(type==0){
+       parent.location.href="{:url('Pic/picList')}";
+    }else if(type == 1){
+       parent.location.href="{:url('Pic/photoList')}";
+    }
+    });
+    }else{
+    layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+    }
+    });
+    return false;
+    });
+    });
+    });
+</script>
+  
+</head>
+<body>
+    <form id="frmUpload" runat="server" style="margin:20px"  class="layui-form">
+        <div class="page-container">
+            <div id="uploader" class="wu-example">
+                <div class="queueList">
+                
+                </div>
+                <div class="statusBar"  >
+                    <div class="btns">
+                        <div id="filePicker" style="display:inline"></div>
+                        <div class="uploadBtn" style="display:inline">开始上传</div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <div class="layui-form-item" >
+            <label style="padding-bottom:10px">分类</label>
+           
+                <select name="typeSelected" lay-filter="typeSelected" id="typeSelected" style="width:100px">
+                    <option value="">请选择类型</option>
+                    <option value="0">首页轮播图</option>
+                    <option value="1">活动剪影</option>
+                </select>
+           
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label style="padding-bottom:10px" >图片描述：</label>
+        <div style="margin:5px">
+           <textarea placeholder="请输入内容" class="layui-textarea" style="padding:20px" id = "desc" name="desc"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="float:right">
+        <div class="layui-input-block">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn" lay-submit="" id="pic_add">立即提交</button>
+        </div>
+    </div>
+</form>
+    
+</body>
+</html>

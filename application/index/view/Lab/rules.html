@@ -1,0 +1,40 @@
+
+<!-- header -->
+{include file="Public/header" /}
+ <link href="__INDEX__/css/paginate.css" rel="stylesheet">
+<!-- header -->
+<section id="all-news">
+    <div class="container">
+        <div class="center fadeInDown wow">
+            <h2>实验室规章制度</h2>
+        </div>
+        <div class="row">
+            <div class="media">
+                <div class="media-body">
+                    <ul class="list-group">
+                       
+                        {volist name="rules" id="vo"}
+                        <li class="list-group-item">
+                            <div>
+                                <div class="title">
+                                    <a href="{$vo.fileurl}">{$vo.name}</a>
+                                </div>
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+                <div  class="pagelist" align="center" class="gk3">
+                    {$page}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

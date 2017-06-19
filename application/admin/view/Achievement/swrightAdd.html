@@ -1,0 +1,129 @@
+{include file="public/toper" /}
+<style>
+  .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 1px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 30px;
+}
+.file_input{
+    height:38px;
+    border: 1px solid #e2e2e2
+}
+.layui-upload-button{
+    display:none;
+}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <div class="layui-tab-content">
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">软件名称</label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" style="width:300px;" id="title">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">软件著作人</label>
+        <div class="layui-input-block">
+          <input type="text" name="participator" lay-verify="required" autocomplete="off" placeholder="请输入软件著作人" class="layui-input" style="width:300px;" id="participator">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">开发完成时间</label>
+        <div class="layui-input-block">
+          <input type="text" name="finish_time" lay-verify="date"  onclick="layui.laydate({elem: this})" autocomplete="off" placeholder="请输入开发完成时间" class="layui-input" style="width:300px;" id="finish_time">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">首次发表时间</label>
+        <div class="layui-input-block">
+          <input type="text" name="pub_time" lay-verify="" autocomplete="off" placeholder="请输入首次发表时间" class="layui-input" style="width:300px;" id="pub_time">
+        </div>
+      </div>
+       <div class="layui-form-item">
+        <label class="layui-form-label">权利取得方式</label>
+        <div class="layui-input-block">
+          <input type="text" name="way" lay-verify="" autocomplete="off" placeholder="请输入权利取得方式" class="layui-input" style="width:300px;" id="way">
+        </div>
+      </div>
+       <div class="layui-form-item">
+        <label class="layui-form-label">权利范围</label>
+        <div class="layui-input-block">
+          <input type="text" name="range" lay-verify="" autocomplete="off" placeholder="请输入权利范围" class="layui-input" style="width:300px;" id="range">
+        </div>
+      </div>
+       <div class="layui-form-item">
+        <label class="layui-form-label">登记号</label>
+        <div class="layui-input-block">
+          <input type="text" name="register_id" lay-verify="" autocomplete="off" placeholder="请输入登记号" class="layui-input" style="width:300px;" id="register_id">
+        </div>
+      </div>
+            <div class="layui-form-item">
+        <label class="layui-form-label">上传图片</label>
+        <div class="layui-input-block">
+           <script id="content" type="text/plain" name="content" style="width:100%;"></script> 
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="" lay-filter="swright_add">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+        <div><p style="color:#c2c2c2;margin-left:50px;margin-top:20px">* 专利具体内容请参照  http://www.pss-system.gov.cn/  *</p></div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+    UE.getEditor('content'); 
+</script> 
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+var element = layui.element()
+,form = layui.form()
+,layedit = layui.layedit
+,laydate = layui.laydate
+,$ = layui.jquery;
+var fileSrc   = "";
+// //图片上传
+// layui.upload({
+// url: '{:url("Achievement/upload")}' //上传接口
+// ,ext: 'jpg|png|gif'
+// ,success: function(res){ //上传成功后的回调
+//   fileSrc  = res['src'];
+//  }
+// });  
+
+//监听提交
+form.on('submit(swright_add)', function(data){
+  var param = data.field;
+  //param['file'] = fileSrc;
+if(content==""){
+    param['content'] ="";
+  }
+  var index =  parent.layer.getFrameIndex(window.name); 
+   console.log(JSON.stringify(param))
+  $.post('{:url("Achievement/swrightAdd")}',param,function(data){
+    if(data.code == 200){
+      layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+      parent.layer.close(index);
+      parent.location.href="{:url('Achievement/swrightList')}";
+    });}else{
+      layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+    }
+  });
+  return false;
+});
+})
+</script>
+{include file="public/footer" /}

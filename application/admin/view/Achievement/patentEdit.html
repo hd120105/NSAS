@@ -1,0 +1,103 @@
+{include file="public/toper" /}
+<style>
+  .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 1px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 30px;
+}
+.file_input{
+    height:38px;
+    border: 1px solid #e2e2e2
+}
+.layui-upload-button{
+    display:none;
+}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <div class="layui-tab-content">
+      {volist name="patent" id="vo"}
+      <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input" style="width:300px;" id="title" value="{$vo.title}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">申请人</label>
+        <div class="layui-input-block">
+          <input type="text" name="applicator" lay-verify="required" autocomplete="off" placeholder="请输入申请人" class="layui-input" style="width:300px;" id="applicator" value="{$vo.applicator}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">专利号</label>
+        <div class="layui-input-block">
+          <input type="text" name="patent_id"  autocomplete="off" placeholder="请输入专利号" class="layui-input" style="width:300px;" id="patent_id" value="{$vo.patent_id}">
+        </div>
+      </div>
+      
+      <div class="layui-form-item">
+        <label class="layui-form-label">分类号</label>
+        <div class="layui-input-block">
+          <input type="text" name="type_id" lay-verify="unit" autocomplete="off" placeholder="请输入主分类号" class="layui-input" style="width:300px;" id="type_id" value="{$vo.type_id}">
+        </div>
+      </div>
+          <div class="layui-form-item">
+        <label class="layui-form-label">查询地址</label>
+        <div class="layui-input-block">
+          <input type="text" name="detailed"  autocomplete="off" placeholder="请输入查询地址" class="layui-input" style="width:300px;" id="detailed" value="{$vo.detailed}">
+        </div>
+      </div>
+      
+      
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="" lay-filter="patent_edit" id="{$vo.id}" >立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+        <div><p style="color:#c2c2c2;margin-left:50px;margin-top:20px">* 专利具体内容请参照  http://www.pss-system.gov.cn/  *</p></div>
+      </div>
+    {/volist}
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+    UE.getEditor('abstract'); 
+</script> 
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+var element = layui.element()
+,form = layui.form()
+,layedit = layui.layedit
+,laydate = layui.laydate
+,$ = layui.jquery;
+
+//监听提交
+form.on('submit(patent_edit)', function(data){
+  var param = data.field;
+  param['id']   = $(this).attr('id');
+  var index =  parent.layer.getFrameIndex(window.name); 
+   console.log(JSON.stringify(param));
+  $.post('{:url("Achievement/patentEdit")}',param,function(data){
+    if(data.code == 200){
+      layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+      parent.layer.close(index);
+      parent.location.href="{:url('Achievement/patentList')}";
+    });}else{
+      layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+    }
+  });
+  return false;
+});
+})
+</script>
+{include file="public/footer" /}

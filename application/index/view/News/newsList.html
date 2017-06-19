@@ -1,0 +1,41 @@
+
+<!-- header -->
+{include file="Public/header" /}
+ <link href="__INDEX__/css/paginate.css" rel="stylesheet">
+<!-- header -->
+<section id="all-news">
+    <div class="container">
+        <div class="center fadeInDown wow">
+            <h2>所有新闻</h2>
+        </div>
+        <div class="row">
+            <div class="media">
+                <div class="media-body">
+                    <ul class="list-group">
+                       
+                        {volist name="newsList" id="vo"}
+                        <li class="list-group-item">
+                            <div>
+                                <div class="title">
+                                    <a href="{:url('News/newsDisplay',array('id'=>$vo.id))}">{$vo.title}</a>
+                                </div>
+                                <span class="pull-right" style="margin-top: -23px">{$vo.createtime}</span>
+                            </div>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+               <div  class="pagelist" align="center" class="gk3">
+                    {$page}
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

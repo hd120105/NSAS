@@ -1,0 +1,71 @@
+
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+<section id="blog">
+{volist name="display" id="vo"}
+ <div class="container" style="margin-top: 50px">
+            <div class="blog">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="blog-item">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-2 text-center">
+
+                                    <div class="entry-meta">
+                                        <span id="publish_date">{$vo.createtime}</span>
+                                        <span><i class="fa fa-user"></i> <a href="#">{$vo.author}</a></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-10 blog-content">
+                                    <h2 class="center">{$vo['title']}</h2>
+
+
+                                    <div class="blog-content">
+                                        {$vo['content']}
+                                    </div>
+                                     <!-- UY BEGIN -->
+                                    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+                                    
+                                    <!-- UY END -->
+                                    <!-- 文章附件 -->
+                                    <!--{template 'shared/attachment'}-->
+
+
+                                </div>
+                            </div>
+                        </div><!--/.blog-item-->
+
+
+
+                        <div id="contact-page clearfix">
+                            <div class="status alert alert-success" style="display: none"></div>
+
+
+                        </div><!--/#contact-page-->
+                    </div><!--/.col-md-8-->
+
+
+                </div><!--/.row-->
+
+            </div><!--/.blog-->
+        </div>
+
+    {/volist}
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+                                    <script>
+                                    var cloudTieConfig = {
+                                    url: document.location.href, 
+                                    sourceId: "",
+                                    productKey: "ed29b387bfeb4929a75eba85eec7786c",
+                                    target: "cloud-tie-wrapper"
+                                    };
+                                    var yunManualLoad = true;
+                                    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+                                    </script>
+</body>
+</html>

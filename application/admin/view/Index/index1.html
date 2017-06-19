@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>后台管理系统|NSAS</title>
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/css/admin.css"/>
+</head>
+<body>
+    <!-- 布局容器 -->
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部 -->
+        <div class="layui-header">
+            <div class="layui-main">
+				<div class="top-left">
+					<!-- logo -->
+					<a class="logo" href="<?php echo url('index/index/index') ?>" target="_blank">
+                     <img src="__PUBLIC__/images/logo.ico" alt="NSAS">
+                    </a>
+					
+					<a href="javascript:;" class="menu-flexible">
+						<i class="layui-icon">&#xe635;</i> 
+					</a>
+				</div>
+                <!-- 头部一级菜单 -->
+                <ul class="layui-nav top-menu" lay-filter="top-menu">
+                    <li class="layui-nav-item layui-this">
+                        <a href="javascript:void(0)">首页</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0)">管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0)">文章</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0)">成果</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0)">成员</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0)">系统</a>
+                    </li>
+                </ul>
+                <!-- 头部右侧操作 -->
+                <ul class="layui-nav operate">
+                    <li class="layui-nav-item">
+                        <a href="{:url('index/Index/index')}">进入前台</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;"><?php echo session('username')?>&nbsp</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a class = "check_btn" url="{:url('Login/check')}" href="javascript:;">查看个人信息</a>
+                            </dd>
+                            <dd>
+                            	<a class = "edit_btn" url="{:url('Login/edit')}" href="javascript:;">修改个人信息</a>
+                            </dd>
+                            <dd>
+                                <a class = "change_btn" url="{:url('Login/change')}" href="javascript:;">修改密码</a>
+                            </dd>
+                            <dd>
+                                <a class = "logout_btn" href="javascript:;">退出登录</a>
+                            </dd>
+                            <dd>
+                                <a class = "logoff_btn" title="Wrapping text around images" href="javascript:;">注销</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 左侧菜单 -->
+       <div class="layui-side layui-bg-black left-menu-all">
+            <div class="layui-side-scroll">
+            	<ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-this">
+                        <a href="javascript:;" data-url="home.html" data-id="1">后台首页</a>
+                    </li>
+                    <li class="layui-nav-item ">
+                        <a href="javascript:;" data-url="<?php echo url('Admin/adminList','tab=2') ?>" data-id="2">用户管理</a>
+                    </li>
+                </ul>
+                <ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-nav-title">
+                        <a>实验室管理</a>
+                    </li>
+                    <li class="layui-nav-item first-item">
+                        <a href="javascript:;" data-url="<?php echo url('Lab/introduce') ?>" data-id="3">实验室简介</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;"data-url="<?php echo url('Lab/rules') ?>" data-id="4">实验室规章制度</a>
+                    </li>
+                     <li class="layui-nav-item">
+                        <a href="javascript:;"data-url="<?php echo url('Lab/fields') ?>" data-id="5">研究方向</a>
+                    </li>
+                </ul>
+				<ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-nav-title">
+                        <a>文章管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="{:url('Article/articleList')}" data-id="6">新闻列表</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Article/Add') ?>" data-id="7">编写新闻</a>
+                    </li>
+                </ul>
+				<ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-nav-title">
+                        <a>成果管理</a>
+                    </li>
+                     <li class="layui-nav-item">
+                        <a href="javascript:;">成果列表</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="<?php echo url('Achievement/paperList')?>" data-id="8">论文列表</a>
+                            </dd>
+							<dd>
+                                <a href="javascript:;" data-url="<?php echo url('Achievement/patentList')?>" data-id="9">专利列表</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="<?php echo url('Achievement/swrightList')?>" data-id="10">软著列表</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Project/projectlist') ?>" data-id="11">项目列表</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Prize/prizelist') ?>" data-id="12">奖项列表</a>
+                    </li>
+                </ul>
+				<ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-nav-title">
+                        <a>成员管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Member/teacher')?>" data-id="13">老师列表</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Member/student') ?>" data-id="14">在校学生列表</a>
+                    </li>
+                     <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Member/graduate') ?>" data-id="15">毕业学生列表</a>
+                    </li>
+                </ul>
+                <ul class="layui-nav layui-nav-tree left-menu" lay-filter="left-menu">
+                    <li class="layui-nav-item layui-nav-title">
+                        <a>系统管理</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Pic/picList') ?>" data-id="16">首页轮播图</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="<?php echo url('Pic/photoList')?>" data-id="17">活动剪影</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+		
+        <!-- 主体 -->
+        <div class="layui-body">
+            <!-- 顶部切换卡 -->
+            <div class="layui-tab layui-tab-card" lay-filter="top-tab" lay-allowClose="true">
+                <ul class="layui-tab-title"></ul>
+                <div class="layui-tab-button">
+                	<a href="javascript:;"><i class="layui-icon">&#x1002;</i></a>
+                </div>
+                <div class="layui-tab-content"></div>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="layui-footer">
+             NSAS
+        </div>
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/admin.js"></script>
+    <script>
+    layui.use(["element","layer"],function()
+    {
+        var $=layui.jquery
+        ,element=layui.element()
+        ,layer=layui.layer;
+        var l_o=$(".left-menu"),
+        tab="top-tab",
+        l_m="left-menu"
+        ,t_m="top-menu";
+        var mainHeight=$(window).height()-60-41-44-5;
+        element.on("nav("+t_m+")",function(data){
+            l_o.hide().eq(data.index()).show()
+        });
+        l_o.on("click","li",function(){
+            $(this).siblings().removeClass("layui-nav-itemed")
+        });
+        element.on("nav("+l_m+")",function(data){
+            var a_t=data.children("a"),
+            id=a_t.data("id"),
+            url=a_t.data("url"),
+            title=a_t.html(),
+            length=$(".layui-tab-title").children("li[lay-id='"+id+"']").length;if(!length){
+                var iframe='<iframe src="'+url+'" style="height:'+mainHeight+'px;"></iframe>';
+                element.tabAdd(tab,{title:title,content:iframe,id:id}
+            )}
+            element.tabChange(tab,id)
+        });
+        l_o.children("li:first").children("a:first").click();
+            $(".menu-flexible").click(function(){$(".layui-side-scroll").toggle();
+            $(".layui-body,.layui-footer").css("left",($(".layui-side-scroll").is(":hidden"))?"0":"200px")});
+            $(".layui-tab-button").on("click","a",function(){
+                var iframe=$(".layui-tab-content").find(".layui-show iframe");
+                iframe.attr("src",iframe.attr("src"))
+        });
+            //查看个人信息
+        $('.check_btn').click(function(){
+            var url = $(this).attr('url');
+            layer.open({
+            type: 2,
+            area: ['700px', '530px'],
+            fixed: false, //不固定
+            maxmin: false,
+            content: url
+            });
+        });
+        //修改个人信息
+        $('.edit_btn').click(function(){
+            var url = $(this).attr('url');
+            layer.open({
+            type: 2,
+            area: ['700px', '530px'],
+            fixed: false, //不固定
+            maxmin: false,
+            content: url
+            });
+        });
+        //修改密码
+        $('.change_btn').click(function(){
+            var url = $(this).attr('url');
+            console.log(url);
+            layer.open({
+            type: 2,
+            area: ['700px', '530px'],
+            fixed: false, //不固定
+            maxmin: false,
+            content: url
+            });
+        });
+        //退出登陆
+        $('.logout_btn').click(function(){
+            layer.confirm('确定退出登录吗?', function(index){
+            loading = layer.load(2, {
+            shade: [0.2,'#000'] //0.2透明度的白色背景
+            });
+            $.getJSON('{:url("Login/Logout")}',function(data){
+            if(data.code == 200){
+                layer.msg(data.msg, {icon: 1,time: 1000});
+                parent.location.href="{:url('Login/Login')}";
+            }else{
+                layer.close(loading);
+                layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+            }
+                
+            });
+            });
+        });
+        //注销
+        $('.logoff_btn').click(function(){
+            layer.confirm('确定注销账号吗?注销之后您将不能再登录系统。', function(index){
+            loading = layer.load(2, {
+            shade: [0.2,'#000'] //0.2透明度的白色背景
+            });
+            $.getJSON('{:url("Login/Logoff")}',function(data){
+            if(data.code == 200){
+                layer.msg(data.msg, {icon: 1,time: 1000});
+                parent.location.href="{:url('Login/Login')}";
+            }else{
+                layer.close(loading);
+                layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+            }
+                
+            });
+        });
+  });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+
+{include file="Public/header" /}
+<!-- header -->
+<section id="about-us">
+    <div class="container">
+        <div class="center wow fadeInDown" style="margin-top: 40px">
+            <h2>毕业学生</h2>
+        </div>
+        <!-- Our Student -->
+        <div class="team">
+
+            <!-- graduate -->
+            
+            <div class="row clearfix">
+                <!--{list id="17" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                {volist name="graduate" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+
+                    <div class="single-profile-bottom wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <div class="media">
+
+                            <div class="media-body">
+
+                                <h4><a href="">{$vo.name}</a></h4>
+                                <h4>{$vo.company} {$vo.job}</h4>
+                                <h4>{$vo.major}</h4>
+                                <ul class="tag clearfix">
+                                    <li class="btn"><a href="#">{$vo.gra_time}</a></li>
+                                </ul>
+                            </div>
+                            
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+
+                </div>
+                {/volist}
+                <!--{/list}-->
+
+            </div>
+        <div class="pagelist">
+    	{$page}
+    	</div>
+    	</table> 
+        </div>
+    </div><!--/.container-->
+
+
+
+</section><!--/about-us-->
+
+
+
+
+
+
+
+
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>
+
+
+

@@ -1,0 +1,105 @@
+<!--实验室简介显示-->
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+  
+  <form class="layui-form layui-form-pane search-form" style="margin:10px">    
+      <a class="layui-btn edit_btn"><i class="layui-icon">&#xe642;</i>修改介绍</a>
+      {volist name="lab" id="vo"}
+      {if condition="$vo.status eq 0"}<!--未发表-->
+      <a class="layui-btn pub_btn" title="发表" id="{$vo.id}"><i class="layui-icon">&#xe609;</i>&nbsp发布</a>
+      {else /}
+      <a class="layui-btn  layui-btn-primary stop_btn" title="回收" id="{$vo.id}"><i class="layui-icon">&#xe609;</i>&nbsp回收</a>
+      {/if}
+  </form>
+  <form class="layui-form">
+    <div class="layui-tab-content">
+      <blockquote class="layui-elem-quote">
+          <p>实验室名称：{$vo.name}</p>
+          <hr><hr>
+          <p>实验室电话：{$vo.tel}</p>
+          <hr><hr>
+          <p>实验室邮箱：{$vo.email}</p>
+          <hr><hr>
+          <p>研究方向：{$vo.fields}</p>
+          <hr><hr>
+          <p>实验室地址：{$vo.address}</p>
+          <hr><hr>
+          <p>研究介绍：{$vo.introduce}</p> 
+      </blockquote>
+  </div>
+  </form>
+    {/volist}
+</div>
+<script>
+layui.use(['element','form','laypage','layer'],function(){
+	var element=layui.element()
+	,form = layui.form()
+	,$ = layui.jquery
+	,laypage=layui.laypage
+	,layer=layui.layer;  
+  $('.edit_btn').click(function(){
+    var status = $(this).attr('status');
+    var id = $(this).attr('id');
+    var name = $(this).attr('name'); 
+    if(status==1){
+      layer.msg('您的文章已经推送,请先回收之后再修改', {icon: 5});
+    }else{  
+          layer.open({
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: "{:url('Lab/edit')}"
+      });
+      }
+  });
+  //推送文章
+  $('.pub_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定推送这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Lab/Pub")}',{'id':id},function(data){
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          location.reload();//do something
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+    });
+  });
+  //回收文章
+  $('.stop_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定回收这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Lab/stop")}',{'id':id},function(data){
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          location.reload();//do something
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      });
+  });
+	form.on('checkbox(checkAll)',function(data){
+		var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+	   	child.each(function(index,item){
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	 });
+  });
+</script>
+{include file="public/footer" /}

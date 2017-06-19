@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>NSAS实验室后台登录</title>
+	<meta name="renderer" content="webkit">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<meta name="apple-mobile-web-app-capable" content="yes">	
+	<meta name="format-detection" content="telephone=no">	
+	<!-- load css -->
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/login1.css" media="all">
+</head>
+<body>
+<div class="layui-canvs"></div>
+    <div id="login-wrap" style="position:absoulte;z-index:5555;">
+        <fieldset class="layui-elem-field" style='    border-color: #9E9E9E;'>
+            <legend>NSAS实验室管理平台登录</legend>
+            <div class="logo" style="margin-bottom:20px"> </div>
+            <div class="layui-field-box">
+                <!--login-form-->
+                <form class="layui-form login-form"  id="login-form">
+                    <div class="layui-form-item">
+                        <input type="text" name="userEmail"  lay-verify="required" placeholder="请输入邮箱号登录" autocomplete="off" class="layui-input radius-5">
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <input type="password" name="password"  lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input radius-5">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="text" id="code" name="code" placeholder="验证码" lay-verify="required" maxlength="4" class="layui-input radius-5" style="float:left;width:130px">
+                            <img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?'+Math.random();" class="layui-input radius-5" id="verifyImg" alt="captcha" style="float:right;width:134px;height:38px"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block" style="text-align: center;">
+                            <button class="layui-btn radius-5" lay-submit lay-filter="login" type="button" id="submit_btn">登陆系统</button>
+                            <a id="forgot-password" href="javascript:;" style="margin-left: 20px;color:#fff">忘记密码？</a>
+                        </div>
+                    </div>
+                </form>
+                <!--end login-form-->
+                <!--forget-form-->
+                <form class="layui-form login-form"  id="forgot-password-form" style="display: none;">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <input type="text" name="account"  lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input radius-5">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <input type="email" name="email"  lay-verify="email" placeholder="邮箱" autocomplete="off" class="layui-input radius-5">
+                        </div>
+                    </div>
+                        <div class="layui-form-item">
+                        <div class="layui-input-block" style="text-align: center;">
+                            <button id='retrieve_btn' class="layui-btn radius-5" lay-submit lay-filter="forget-password" type="button">找回密码</button>
+                            <a id="go-back-login" href="javascript:;" style="margin-left: 20px;color:#fff">返回登陆</a>
+                        </div>
+                    </div>
+            </form>
+            <!--end forget-form-->
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/login.js"></script>
+<script type="text/javascript" src="__PUBLIC__/jsplug/jparticle.jquery.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".layui-canvs").jParticle({//canvs style
+		background: "#141414",
+		color: "#E6E6E6"
+	});
+  layui.use(["layer","form","element","jquery"],function(){
+	var layer=layui.layer,form=layui.form(),a=layui.element(),$=layui.jquery;
+        $("#forgot-password").on("click",function(){
+        $("#login-form").slideToggle();
+        $("#forgot-password-form").slideToggle();
+	});
+	$("#go-back-login").on("click",function(){
+		$("#login-form").slideToggle();
+		$("#forgot-password-form").slideToggle();
+	});
+	$("#submit_btn").click(function(){
+	    var url="{:url('Login/Login')}";
+        $.ajax({
+        type: 'POST',
+        url: url,
+        dataType: 'json',
+        data:$('#login-form').serialize(),
+        success: function(data){
+           if(data.code==1)
+            {
+              window.location.href="{:url('Index/index')}";
+              layer.msg(data.msg,{icon:6});
+              return false;
+            }else if(data.code==4){
+               layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+            } else{
+              layer.msg(data.msg
+              , {icon: 2, anim: 6, time: 1000});
+            }
+         },
+         error:function(data) {
+          layer.msg('登录失败', {icon: 2, anim: 6, time: 1000});
+        },
+      }); 
+	});
+	form.on("submit(login)",function(e){
+		return true
+	});
+	form.on("submit(forget-password)",function(e){
+        var param = e.field;
+        console.log(JSON.stringify(param));
+        $.post('{:url("Login/forgetpwd")}',param,function(data){
+            if(data.code==200){ 
+                layer.msg(data.msg);
+                $("#login-form").slideToggle();
+                $("#forgot-password-form").slideToggle();
+            }else
+            {
+                layer.msg(data.msg);
+            }
+        });
+		return false
+	})
+  });
+});
+</script>
+</body>
+</html>

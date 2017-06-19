@@ -1,0 +1,177 @@
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <form class="layui-form layui-form-pane search-form" style="margin:10px;float:left" action="{:url('Article/articleList')}" method="post">
+    <div class="layui-form-item">
+      <div class="layui-input-inline">
+        <input type="text" id= "search" name="search" value="" lay-verify="" placeholder="请输入标题搜索" autocomplete="off" class="layui-input">
+      </div>
+      <button class="layui-btn search_btn" type="submit">搜索</button>
+    </div>
+    <a class="layui-btn layui-btn-warm add_btn"><i class="layui-icon">&#xe608;</i>添加新闻</a>
+  </form>
+   <form class="layui-form layui-form-pane type-form" style="margin:10px;float:left" action="{:url('Article/articleList')}" method="post">
+           <div class="layui-input-inline">
+          <select name="type" lay-filter="type" id="type" >
+            <option value=""></option>
+            <option value="0">学术新闻</option>
+            <option value="1" >娱乐新闻</option>
+          </select> 
+           </div>
+          <button class="layui-btn type_btn" type="submit">查询</button>
+  </form>
+  <form class="layui-form">
+    <table class="list-table">
+      <thead>
+        <th >标题</th>
+        <th>作者</th>
+        <th>类型</th>
+        <th>关键字</th>
+        <th>内容</th>
+        <th>创作时间</th>
+        <th>状态</th>
+        <th style="width:15%">操作</th>
+      </thead>
+      <tbody>
+        {volist name="Article" id="vo"}
+        <tr>
+          <td title="{$vo.title}"><a href="#">{$vo.title}</a></td>
+          <td title="{$vo.author}"><a href="#">{$vo.author}</a></td>
+          <td>{if condition="$vo.type eq 0"}<span class ="newsone">学术新闻</span>{elseif condition="$vo.type eq 1"}<span class="newstwo">娱乐新闻</span>{else/}{/if}</td>
+          <td title="{$vo.keywords}"><a href="#">{$vo.keywords}</a></td>
+          <td title="<?php echo htmlspecialchars($vo['content']); ?>"><a href="#"><?php echo htmlspecialchars($vo['content']); ?></a></td>
+          <td title="{$vo.createtime}"><a href="#">{$vo.createtime}</a></td>
+          {if condition="$vo.status eq 0"}
+          <td class="status_btn"><span class ="statusone">未发表</span></td>
+          <td style="text-align: center;">
+             <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+          {elseif condition="$vo.status eq 1"}
+          <td class="status_btn"><span class="statustwo">已发表</span></td>
+          <td style="text-align: center;">
+            <a class="layui-btn layui-btn-primary layui-btn-small down_btn" id = "{$vo.id}" title="回收" ><i class="layui-icon">&#xe609;</i></a>
+          {else/}
+          <td class="status_btn"><span class ="statusthree">已回收</span></td>
+          <td style="text-align: center;">
+            <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+          {/if} 
+            <a class="layui-btn layui-btn-small edit_btn" id = "{$vo.id}" name="{$vo.title}" title="编辑" status="{$vo.status}" url="{:url('Article/Edit',array('id'=>$vo.id))}"><i class="layui-icon"></i></a>
+            <a class="layui-btn layui-btn-small layui-btn-danger del_btn" id="{$vo.id}" status="{$vo.status}" title="删除" ><i class="layui-icon"></i></a>
+          </td>
+        </tr>
+        {/volist}
+      </tbody>
+    </table>
+    <div class="pagelist">
+      {$page}
+    </div>
+  </form>
+</div>
+<script>
+layui.use(['element','form','laypage','layer'],function(){
+  var element=layui.element()
+  ,form = layui.form()
+  ,$ = layui.jquery
+  ,laypage=layui.laypage
+  ,layer=layui.layer;
+  //类型选择
+  // form.on('select(type)',function(data){
+  //    var type=$('#type').val();
+  //    $.post('{:url("Article/articleList")}',{'type':type},function(data){
+  //      window.location.reload();
+  //    });
+  // });
+  //添加
+  $('.add_btn').click(function(){
+      var index = layer.open({
+      type: 2,
+      area: ['700px', '530px'],
+      fixed: false, //不固定
+      title:'文章添加',
+      maxmin: true,
+      content: '{:url("Article/Add")}'
+    });
+    layer.full(index);
+  });
+    //编辑
+  $('.edit_btn').click(function(){
+    var status = $(this).attr('status');
+    var id = $(this).attr('id');
+    var name = $(this).attr('name');
+    var url = $(this).attr('url');
+    if(status==1){
+      layer.msg('您的文章已经推送,请先回收之后再修改', {icon: 5});
+    }else{
+      
+          window.location.href=url;
+      }
+  });
+    //删除
+  $('.del_btn').click(function(){
+    var id = $(this).attr('id');
+    var status = $(this).attr('status');
+    if(status==1){
+      layer.msg('您的新闻已经推送,请先回收之后再修改', {icon: 5});
+    }else{
+      layer.confirm('确定删除这条新闻?', function(index){
+        loading = layer.load(2, {
+          shade: [0.2,'#000'] //0.2透明度的白色背景
+        });
+        $.post('{:url("Article/Del")}',{'id':id},function(data){
+          if(data.code == 200){
+            layer.close(loading);
+            layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            location.reload();//do something
+            });
+          }else{
+            layer.close(loading);
+            layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+          }
+        });
+    });
+    }
+  });
+
+  //发表文章
+  $('.pub_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定推送这条新闻?', function(index){
+      loading = layer.load(2, {
+        shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Article/Pub")}',{'id':id},function(data){
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          location.reload();//do something
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+    });
+  });
+
+  //回收文章
+  $('.down_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定回收这条新闻?', function(index){
+      loading = layer.load(2, {
+        shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Article/stop")}',{'id':id},function(data){
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          location.reload();//do something
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+    });
+  });
+});
+
+</script>
+{include file="public/footer" /}

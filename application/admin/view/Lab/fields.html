@@ -1,0 +1,157 @@
+<!--实验室研究方向展示-->
+{include file="public/toper" /}
+<style>
+  p{ 
+     word-wrap:break-word;
+     word-break:normal; 
+     margin: 20px;}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <form class="layui-form layui-form-pane search-form" style="margin:10px">
+     <a class="layui-btn layui-btn-warm add_btn"><i class="layui-icon">&#xe608;</i>添加</a> 
+  </form>
+  <form class="layui-form" style="margin:20px;">
+    {volist name="fields" id="vo"}
+    <strong style="margin-left:20px;font-size:200%;">{$vo.name}</strong>
+    <p class="introduce">{$vo.introduce}</p>
+    {if condition="$vo.status eq 0"}
+    <div class="layui-field-box" style="text-align:right"> 
+      <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+    {elseif condition="$vo.status eq 1"}
+    <div class="layui-field-box" style="text-align:right"> 
+       <a class="layui-btn layui-btn-small layui-btn-primary down_btn" id = "{$vo.id}" title="回收" ><i class="layui-icon">&#xe609;</i></a>
+    {else /}
+    <div class="layui-field-box" style="text-align:right"> 
+      <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+    {/if}
+      <a class="layui-btn layui-btn-small edit_btn" id = "{$vo.id}" name="{$vo.name}"  status="{$vo.status}" url="{:url('Lab/Editfield',array('id'=>$vo.id))}" title="编辑" url=""><i class="layui-icon"></i></a>
+      <a class="layui-btn layui-btn-small layui-btn-danger del_btn" id="{$vo.id}" title="删除" status="{$vo.status}" ><i class="layui-icon"></i></a>
+    </div>
+    <hr>
+    {/volist}
+  </form>
+  
+</div>
+<script>
+layui.use(['element','form','laypage','layer'],function(){
+	var element=layui.element()
+	,form = layui.form()
+	,$ = layui.jquery
+	,laypage=layui.laypage
+	,layer=layui.layer;
+    
+    //添加
+    $('.add_btn').click(function(){
+       var index = layer.open({
+       type: 2,
+       area: ['700px', '530px'],
+       fixed: false, //不固定
+       title:'添加信息',
+       maxmin: true,
+       content: '{:url("Lab/Addfield")}'
+     });
+     layer.full(index);
+    });
+    //修改
+     $('.edit_btn').click(function(){
+    	var status = $(this).attr('status');
+    	var id = $(this).attr('id');
+      var name = $(this).attr('name');
+      var url = $(this).attr('url');
+      console.log(id);
+    	if(status==1){
+    		layer.msg('您的消息已经推送,请先回收之后再修改', {icon: 5});
+    	}else{
+    		
+            var index = layer.open({
+            type: 2,
+            area: ['700px', '530px'],
+            fixed: false, //不固定
+            title:'修改信息',
+            maxmin: true,
+            content: url
+        });
+        layer.full(index);
+        }
+   });
+    //删除文章
+	$('.del_btn').click(function(){
+      var id = $(this).attr('id');
+      var status = $(this).attr('status');
+      console.log(status);
+      if(status==1){
+         layer.msg('请先回收之后再删除', {icon: 5, time: 1000}, function(){
+         })
+      }else{
+      layer.confirm('确定删除这条项目?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Lab/Delfield")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+      }
+    });
+
+    //发表文章
+    $('.pub_btn').click(function(){
+      var id = $(this).attr('id');
+       console.log(id);
+      layer.confirm('确定推送这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Lab/Pubfield")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+    });
+
+    //回收文章
+    $('.down_btn').click(function(){
+      var id = $(this).attr('id');
+      layer.confirm('确定回收这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Lab/stopfield")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+    });
+	form.on('checkbox(checkAll)',function(data){
+		var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+		child.each(function(index,item){
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	 });
+  });
+
+</script>
+{include file="public/footer" /}

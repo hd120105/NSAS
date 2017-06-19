@@ -1,0 +1,171 @@
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <form class="layui-form layui-form-pane search-form"id="search-form" style="margin:10px" action="{:url('Achievement/swrightList')}" method="post">
+      <div class="layui-form-item">
+        <div class="layui-input-inline">
+          <input type="text" id= "search" name="search" value="" lay-verify="" placeholder="请输入标题搜索" autocomplete="off" class="layui-input">
+        </div>
+        <button class="layui-btn search_btn" type="submit">搜索</button>
+      </div>
+      <a class="layui-btn layui-btn-warm add_btn"><i class="layui-icon">&#xe608;</i>添加成果</a>
+  </form>
+  <form class="layui-form">
+    <table class="list-table">
+      <thead>
+      <th  tyle="width:20%">软件名称</th>
+      <th style="width:15%">著作权人</th>
+      <th style="width:10%">开发完成时间</th>
+      <th style="width:10%">首次发表时间</th>
+      <th style="width:10%">权利取得方式</th>
+      <th style="width:10%">权利范围</th>
+      <th style="width:10%">登记号</th>
+      <th style="width:10%">状态</th>
+      <th style="width:15%">操作</th>
+      </thead>
+      <tbody>
+        {if condition="$count neq 0"}
+        {volist name="swright" id="vo"}
+        <tr>
+          <td title="{$vo.title}"><a href="#">{$vo.title}</a></td>
+          <td title="{$vo.participator}"><a href="#">{$vo.participator}</a></td>
+          <td title="{$vo.finish_time}"><a href="#">{$vo.finish_time}</a></td>
+          <td title="{$vo.finish_time}"><a href="#">{$vo.pub_time}</a></td>
+          <td title="{$vo.way}"><a href="#">{$vo.way}</a></td>
+          <td title="{$vo.range}"><a href="#">{$vo.range}</a></td>
+          <td title="{$vo.register_id}"><a href="#">{$vo.register_id}</a></td>
+          {if condition="$vo.status eq 0"}
+          <td class="status_btn"><span class ="statusone">未发表</span></td>
+          <td style="text-align: center;">
+          <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+          {elseif condition="$vo.status eq 1"}
+          <td class="status_btn"><span class="statustwo">已发表</span></td>
+          <td style="text-align: center;">
+          <a class="layui-btn layui-btn-primary layui-btn-small down_btn" id = "{$vo.id}" title="回收" ><i class="layui-icon">&#xe609;</i></a>
+          {else/}
+          <td class="status_btn"><span class ="statusthree">已回收</span></td>
+          <td style="text-align: center;">
+          <a class="layui-btn layui-btn-small pub_btn" id = "{$vo.id}" title="发布" ><i class="layui-icon">&#xe609;</i></a>
+          {/if} 
+          <a class="layui-btn layui-btn-small edit_btn" id = "{$vo.id}" name="{$vo.title}" title="编辑" status="{$vo.status}" url="{:url('Achievement/swrightEdit',array('id'=>$vo.id))}"><i class="layui-icon"></i></a>
+          <a class="layui-btn layui-btn-small layui-btn-danger del_btn" id="{$vo.id}" title="删除"  status="{$vo.status}"><i class="layui-icon"></i></a>
+          </td>
+        </tr>
+        {/volist}
+         {else/}
+        <td style="width:100%;text-align:center" colspan="9">暂无数据</td>
+        {/if}
+      </tbody>
+    </table>
+    <div class="pagelist">
+    {$page}
+    </div>
+  </form>
+</div>
+<script>
+layui.use(['element','form','laypage','layer'],function(){
+var element=layui.element()
+,form = layui.form()
+,$ = layui.jquery
+,laypage=layui.laypage
+,layer=layui.layer;
+var i = 0;
+//添加
+$('.add_btn').click(function(){
+  var index = layer.open({
+      type: 2,
+      area: ['700px', '530px'],
+      fixed: false, //不固定
+      maxmin: true,
+      content: '{:url("Achievement/swrightAdd")}'
+    });
+    layer.full(index);
+});
+  //编辑
+$('.edit_btn').click(function(){
+    var status = $(this).attr('status');
+    var id = $(this).attr('id');
+    var name = $(this).attr('name');
+    var url = $(this).attr('url');
+    if(status==1){
+      layer.msg('您的文章已经发表,请先回收之后再修改', {icon: 5});
+    }else{
+      
+          var index = layer.open({
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: url
+      });
+      layer.full(index);
+      }
+  });
+  //删除
+$('.del_btn').click(function(){
+    var id = $(this).attr('id');
+      var status = $(this).attr('status');
+    if(status==1){
+      layer.msg('您的消息已经推送,请先回收之后再修改', {icon: 5});
+    }else{
+    layer.confirm('确定删除这条消息?', function(index){
+    loading = layer.load(2, {
+    shade: [0.2,'#000'] //0.2透明度的白色背景
+    });
+    $.post('{:url("Achievement/Del")}',{'id':id,"type":3},function(data){
+      if(data.code == 200){
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+        location.reload();//do something
+        });
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    });
+    }
+  });
+  //发表
+  $('.pub_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定发表这条消息?', function(index){
+    loading = layer.load(2, {
+    shade: [0.2,'#000'] //0.2透明度的白色背景
+    });
+    $.post('{:url("Achievement/Pub")}',{'id':id,"type":3},function(data){
+      if(data.code == 200){
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+        location.reload();//do something
+        });
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    });
+  });
+
+  //回收
+  $('.down_btn').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定回收这条消息?', function(index){
+    loading = layer.load(2, {
+    shade: [0.2,'#000'] //0.2透明度的白色背景
+    });
+    $.post('{:url("Achievement/stop")}',{'id':id,"type":3},function(data){
+      if(data.code == 200){
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+        location.reload();//do something
+        });
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    });
+  });
+});
+</script>
+{include file="public/footer" /}

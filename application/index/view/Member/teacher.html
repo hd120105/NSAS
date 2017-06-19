@@ -1,0 +1,108 @@
+
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+<section id="about-us">
+    <div class="container">
+        <div class="team">
+            <div class="center wow fadeInDown" style="margin-top: 40px">
+                <h2>团队教师</h2>
+            </div>
+
+
+            <!-- our teacher -->
+
+            <div class="row clearfix">
+                <!--{list id="23" page="1" pagesize="1"}-->
+               
+                <div class="col-md-6 col-sm-6 col-md-offset-3">
+                   
+                    <div class="single-profile-top wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+                        <div class="media">
+                          {volist name="leader" id="vo"}
+                            <div class="pull-left">
+                                <a href="{:url('Member/teacherDisplay',array('id'=>$vo.id))}"><img class="media-object" src="{$vo.pic}" id="" alt="" style="width:200px; height:300px"></a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{:url('Member/teacherDisplay',array('id'=>$vo.id))}"><h4>{$vo.name}</h4></a>
+                                <h5>{$vo.title}</h5>
+                                <ul class="tag clearfix">
+                                    <li class="btn"><a href="#">{$vo.area}</a></li>
+                                </ul>
+
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo.email}</span></li>
+
+                                </ul>
+                            </div>
+                             {/volist}
+                        </div><!--/.media -->
+                        <p></p>
+                    </div>
+                     
+                </div><!--/.col-lg-4 -->
+              
+                <!--{/list}-->
+            </div> <!--/.row -->
+            <div class="row team-bar">
+                <div class="first-one-arrow hidden-xs">
+                    <hr>
+                </div>
+                <div class="first-arrow hidden-xs">
+                    <hr> <i class="fa fa-star"></i>
+                </div>
+                <div class="second-arrow hidden-xs">
+                    <hr> <i class="fa fa-leaf"></i>
+                </div>
+                <div class="third-arrow hidden-xs">
+                    <hr> <i class="fa fa-sun-o"></i>
+                </div>
+                <div class="fourth-arrow hidden-xs">
+                    <hr> <i class="fa fa-star"></i>
+                </div>
+
+            </div> <!--skill_border-->
+           
+            <div class="row clearfix">
+                {volist name="teacher" id="vo"}
+                <div class="col-md-4 col-sm-6 ">
+                   
+                    <div class="single-profile-top wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+                      
+                        <div class="media">
+                         
+                            <div class="pull-left">
+                                <a href="{:url('Member/teacherDisplay',array('id'=>$vo.id))}"><img class="media-object" src="{$vo.pic}" alt="" style="width:200px; height:300px"></a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{:url('Member/teacherDisplay',array('id'=>$vo.id))}"><h4>{$vo.name}</h4></a>
+                                <h5>{$vo.title}</h5>
+                                <ul class="tag clearfix">
+                                    <li class="btn"><a href="#">{$vo['area']}</a></li>
+                                </ul>
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-envelope"></i></a><span style="margin:4px 5px">{$vo['email']}</span></li>
+
+                                </ul>
+                            </div>
+                        </div><!--/.media -->
+                        
+                        <p></p>
+                    </div>
+                </div><!--/.col-lg-4 -->
+               {/volist}     
+                <!--{/list}-->
+            </div>	<!--/.row-->
+            
+        </div><!--/.our-teacher-->
+
+
+    </div><!--/.container-->
+</section><!--/about-us-->
+
+
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

@@ -1,0 +1,74 @@
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <div class="layui-tab-content">
+    <form class="layui-form" action="" >
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+          <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input" style="width:300px;" id="username">
+      </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+          <input type="text" name="password" lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input" style="width:300px;" id="password">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+          <input type="text" name="email"  autocomplete="off" lay-verify="email" placeholder="请输入邮箱号" class="layui-input" style="width:300px;" id="email">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+          <input type="text" name="tel" lay-verify="unit" autocomplete="off" placeholder="请输入电话号码" class="layui-input" style="width:300px;" id="tel">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit="" lay-filter="user_add">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+var element = layui.element()
+,form = layui.form()
+,layedit = layui.layedit
+,laydate = layui.laydate
+,$ = layui.jquery;
+
+//监听提交
+form.on('submit(user_add)', function(data){
+  var param = data.field;
+  var index =  parent.layer.getFrameIndex(window.name);
+  console.log(JSON.stringify(data.field));
+  console.log(JSON.stringify(index));
+  $.post('{:url("Admin/Add")}',param,function(data){
+    if(data.code == 200){
+      layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+      parent.layer.close(index);
+      parent.location.href="{:url('Admin/adminList')}";
+    });
+    }else if(data.code==401){
+      layer.tips(data.msg, $("#username"));
+      $('#username').focus(); 
+    }else if(data.code==402){
+      layer.tips(data.msg, $("#email"));
+      $('#email').focus(); 
+    }
+    });
+    return false;
+  });
+});
+</script>
+{include file="public/footer" /}

@@ -1,0 +1,424 @@
+{include file="Public/toper" }
+<style>
+.top_admin_user ul li {
+  float:left;
+  position:relative;
+
+}
+.top_admin_user ul li a, .top_admin_user ul li a:visited {
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  width:104px;
+  height:30px;
+  color:#000;
+  line-height:30px;
+  font-size:11px;
+}
+.top_admin_user ul li ul {
+  display: none;
+}
+.top_admin_user ul li:hover a {
+  color:#fff;
+  width:100px;
+}
+.top_admin_user ul li:hover ul {
+  display:block;
+  position:absolute;
+  top:31px;
+  left:0;
+  width:105px;
+  margin-top:20px;
+}
+
+.top_admin_user ul li:hover ul li a {
+  display:block;
+  background:#fbfbfb;
+  color:#000;
+
+}
+
+.top_admin_user ul li:hover ul li a:hover {
+  background:#009688;
+  color:#000;
+} 
+</style>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header header">
+      <div class="layui-main">
+        <a class="logo" href="<?php echo url('index/index/index') ?>" target="_blank">
+          <img src="__PUBLIC__/images/logo.ico" alt="Lz_CMS">
+        </a>
+        <ul class="layui-nav top-nav-container">
+          <li class="layui-nav-item layui-this">
+            <a href="javascript:void(0)">首页</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:void(0)">管理</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:void(0)">文章</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:void(0)">成果</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:void(0)">成员</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:void(0)">系统</a>
+          </li>
+          
+        </ul>
+        <div class="top_admin_user" style="margin:20px">
+        <ul>
+          <li><a class="logout_btn" style="height:70px" ><?php echo session('username')?>&nbsp<i class="layui-icon" style="font-size: 10px;">&#xe61a;</i></a>
+            <ul>
+            <li><a class = "check_btn" url="{:url('Login/check')}">查看个人信息</a></li>
+            <li><a class = "edit_btn" url="{:url('Login/edit')}">修改个人信息</a></li>
+            <li><a class = "change_btn" url="{:url('Login/change')}">修改密码</a></li>
+            <li><a class = "logout_btn">退出登录</a></li>
+            <li><a class = "logoff_btn" title="Wrapping text around images">注销</a></li>
+            </ul>
+        </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree left_menu_ul">
+              <li class="layui-nav-item layui-nav-title">
+                <a>用户信息</a>
+              </li>
+              <li class="layui-nav-item first-item layui-this">
+                <a href="<?php echo url('index/home') ?>" target="main">
+                  <i class="iconfont">&#xe6ee;</i>
+                  <cite>首页</cite>
+                </a>
+              </li>
+               <li class="layui-nav-item">
+                <a href="<?php echo url('Admin/adminList','tab=2') ?>" target="main">
+                 <i class="iconfont">&#xe62a;</i>
+                  <cite>用户管理</cite>
+                </a>
+              </li>
+            </ul>
+             <ul class="layui-nav layui-nav-tree left_menu_ul setting_ul hide">
+              <li class="layui-nav-item layui-nav-title">
+                
+                <a>实验室管理</a>
+              </li>
+              <li class="layui-nav-item first-item ">
+                <a href="<?php echo url('Lab/introduce') ?>" target="main">
+                  <i class="iconfont">&#xe6c5;</i>
+                  <cite>实验室简介</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item ">
+                <a href="<?php echo url('Lab/rules') ?>" target="main">
+                  <i class="iconfont">&#xe613;</i>
+                  <cite>实验室规章制度</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item  ">
+                <a href="<?php echo url('Lab/fields') ?>" target="main">
+                  <i class="iconfont">&#xe62f;</i>
+                  <cite>研究方向</cite>
+                </a>
+              </li>
+             
+            </ul>
+            <ul class="layui-nav layui-nav-tree left_menu_ul content_put_manage hide">
+              <li class="layui-nav-item layui-nav-title">
+                <a>内容发布管理</a>
+              </li>
+              <li class="layui-nav-item first-item">
+                <a href="{:url('Article/articleList')}" target="main">
+                  <i class="iconfont">&#xe6bc;</i>
+                  <cite>新闻列表</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item content_manage">
+                <a href="<?php echo url('Article/Add') ?>" target="main">
+                  <i class="iconfont">&#xe600;</i>
+                  <cite>编写新闻</cite>
+                </a>
+              </li>             
+            </ul>
+            <ul class="layui-nav layui-nav-tree left_menu_ul hide">
+              <li class="layui-nav-item layui-nav-title">
+                <a>成果管理</a>
+              </li>
+              <li class="layui-nav-item first-item">
+                <a href="<?php echo url('Achievement/achievement') ?>" target="main">
+                  <i class="iconfont">&#xe93d;</i>
+                  <cite>成果列表</cite>
+    <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="lists.html" data-id="2">测试列表</a>
+                            </dd>
+							<dd>
+                                <a href="javascript:;" data-url="login.html" data-id="8">登录页</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="tabletree.html" data-id="9">树表示例</a>
+                            </dd>
+                        </dl>
+                </a>
+              </li>
+               <li class="layui-nav-item ">
+                <a href="<?php echo url('Project/projectlist') ?>" target="main">
+                  <i class="iconfont">&#xe611;</i>
+                  <cite>项目列表</cite>
+                  <dl class="layui-nav-child">
+      <dd><a href="">移动模块</a></dd>
+      <dd><a href="">后台模版</a></dd>
+      <dd><a href="">电商平台</a></dd>
+    </dl>
+                </a>
+              </li>
+               <li class="layui-nav-item ">
+                <a href="<?php echo url('Prize/prizelist') ?>" target="main">
+                  <i class="iconfont">&#xe60c;</i>
+                  <cite>奖项列表</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item content_manage">
+                <a href="<?php echo url('Achievement/Add') ?>" target="main">
+                  <i class="iconfont">&#xe600;</i>
+                  <cite>添加成果</cite>
+                </a>
+              </li>
+            </ul>
+            <ul class="layui-nav layui-nav-tree left_menu_ul setting_ul hide">
+              <li class="layui-nav-item layui-nav-title">
+                <a>成员管理</a>
+              </li>
+              <li class="layui-nav-item first-item ">
+                <a href="<?php echo url('Member/teacher') ?>" target="main">
+                  <i class="iconfont">&#xe644;</i>
+                  <cite>老师列表</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item ">
+                <a href="<?php echo url('Member/student') ?>" target="main">
+                  <i class="iconfont">&#xe7c8;</i>
+                  <cite>在校学生列表</cite>
+                </a>
+              </li>
+              <li class="layui-nav-item  ">
+                <a href="<?php echo url('Member/graduate') ?>" target="main">
+                  <i class="iconfont">&#xe6d0;</i>
+                  <cite>毕业学生列表</cite>
+                </a>
+              </li>
+             
+            </ul>
+              <ul class="layui-nav layui-nav-tree left_menu_ul setting_ul hide">
+              <li class="layui-nav-item layui-nav-title">
+                <a>系统管理</a>
+              </li>
+             
+             
+               <li class="layui-nav-item first-item">
+                <a href="<?php echo url('Pic/picList') ?>" target="main">
+                  <i class="iconfont">&#xe766;</i>
+                  <cite>首页轮播图</cite>
+                </a>
+              </li>
+               <li class="layui-nav-item ">
+                <a href="<?php echo url('Pic/photoList') ?>" target="main">
+                  <i class="iconfont">&#xe68f;</i>
+                  <cite>照片墙</cite>
+                </a>
+              </li>
+              </ul>
+    			<div class="content_manage_container left_menu_ul hide">
+    				<div class="content_manage_title">内容管理</div>
+        		<div id="content_manage_tree"></div>
+        	</div>
+        </div>
+    </div>
+
+    <div class="layui-body iframe-container">
+        <div class="iframe-mask" id="iframe-mask"></div>
+        <iframe class="admin-iframe" id="admin-iframe" name="main" src="<?php echo url('home') ?>"></iframe>
+    </div>
+    
+
+
+<script type="text/javascript">
+layui.use(['layer', 'element','jquery','tree'], function(){
+  var layer = layui.layer
+  ,element = layui.element() //导航的hover效果、二级菜单等功能，需要依赖element模块
+  ,$ = layui.jquery
+
+  //头部菜单切换
+  $('.top-nav-container .layui-nav-item').click(function(){
+    var menu_index = $(this).index('.top-nav-container .layui-nav-item');
+    $('.top-nav-container .layui-nav-item').removeClass('layui-this');
+    $(this).addClass('layui-this');
+    $('.left_menu_ul').addClass('hide');
+    $('.left_menu_ul:eq('+menu_index+')').removeClass('hide');
+    $('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+    $('.left_menu_ul:eq('+menu_index+')').find('.first-item').addClass('layui-this');
+    var url = $('.left_menu_ul:eq('+menu_index+')').find('.first-item a').attr('href');
+    $('.admin-iframe').attr('src',url);
+    //出现遮罩层
+    $("#iframe-mask").show();
+    //遮罩层消失
+    $("#admin-iframe").load(function(){   
+      $("#iframe-mask").fadeOut(100);
+    });
+  });
+  //左边菜单点击
+  $('.left_menu_ul .layui-nav-item').click(function(){
+    $('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+    $(this).addClass('layui-this');
+    //出现遮罩层
+    $("#iframe-mask").show();
+    //遮罩层消失
+    $("#admin-iframe").load(function(){   
+      $("#iframe-mask").fadeOut(100);
+    });
+  });
+   $('.add').click(function(){
+   	  	var index = layer.open({
+       type: 2,
+       content: '{:url("Achievement/Add")}',
+  area: ['700px', '530px'],
+  maxmin: true,
+    success:function(layero,index){
+        },
+        end:function(){
+            
+                    history.back(-1);
+         
+            }
+  });
+   })
+  //点击回到内容页面
+  $('.content_manage_title').click(function(){
+  	$('.left_menu_ul .layui-nav-item').removeClass('layui-this');
+  	$(this).parent().addClass('hide');
+  	$('.content_put_manage').find('.first-item').addClass('layui-this');
+  	var url = $('.content_put_manage').find('.first-item a').attr('href');
+    $('.admin-iframe').attr('src',url);
+  	$('.content_put_manage').removeClass('hide');
+
+  });
+  //内容管理树
+  // $('.content_manage').click(function(){
+  //   loading = layer.load(2, {
+  //     shade: [0.2,'#000'] //0.2透明度的白色背景
+  //   });
+  //   $.getJSON('{:url("category/manage_tree")}',function(data){
+  //     $('#content_manage_tree').empty();
+  //     layui.tree({
+  //       elem: '#content_manage_tree' //传入元素选择器
+  //       ,skin: 'white'
+  //       ,target: 'main'
+  //       ,nodes: data
+  //     });
+  //     $('.left_menu_ul').addClass('hide');
+  //     $('.content_manage_container').removeClass('hide');
+  //     layer.close(loading);
+  //   });
+  // });
+
+  //更新缓存
+  $('.update_cache').click(function(){
+    loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+    });
+    $.getJSON('{:url("cache/update")}',function(data){
+      if(data.code == 200){
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          location.reload();//do something
+        });
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+  });
+  //查看个人信息
+$('.check_btn').click(function(){
+      var url = $(this).attr('url');
+      layer.open({
+      type: 2,
+      area: ['700px', '530px'],
+      fixed: false, //不固定
+      maxmin: false,
+      content: url
+    });
+   });
+ //修改个人信息
+$('.edit_btn').click(function(){
+      var url = $(this).attr('url');
+      layer.open({
+      type: 2,
+      area: ['700px', '530px'],
+      fixed: false, //不固定
+      maxmin: false,
+      content: url
+    });
+   });
+   //修改密码
+$('.change_btn').click(function(){
+      var url = $(this).attr('url');
+      console.log(url);
+      layer.open({
+      type: 2,
+      area: ['700px', '530px'],
+      fixed: false, //不固定
+      maxmin: false,
+      content: url
+    });
+   });
+  //退出登陆
+  $('.logout_btn').click(function(){
+      layer.confirm('确定退出登录吗?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.getJSON('{:url("Login/Logout")}',function(data){
+      if(data.code == 200){
+        layer.msg(data.msg, {icon: 1,time: 1000});
+         parent.location.href="{:url('Login/Login')}";
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+        
+      });
+     });
+  });
+//注销
+  $('.logoff_btn').click(function(){
+      layer.confirm('确定注销账号吗?注销之后您将不能再登录系统。', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.getJSON('{:url("Login/Logoff")}',function(data){
+      if(data.code == 200){
+        layer.msg(data.msg, {icon: 1,time: 1000});
+         parent.location.href="{:url('Login/Login')}";
+      }else{
+        layer.close(loading);
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+        
+      });
+     });
+  });
+});
+
+
+</script>
+ 
+</body>
+
+</html>

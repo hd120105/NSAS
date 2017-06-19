@@ -1,0 +1,55 @@
+<<body>
+<!-- header -->
+{include file="Public/header" /}
+ <link href="__INDEX__/css/paginate.css" rel="stylesheet">
+<!-- header -->
+<section id="program">
+    <div class="container">
+        <!-- 论文 -->
+        <div class="row">
+            <div class="title title1">
+                <h3>科研项目</h3>
+            </div>
+
+            <div class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="padding:10px 50px">
+                <div class="table-responsive">
+                    <table class="table table-hover center table-bordered">
+                        <thead>
+                        <tr>
+                            <td style="width: 30%">项目名称</td>
+                            <td style="width: 20%">项目来源</td>
+                            <td style="width: 20%">项目编号</td>
+                            <td style="width: 10%">进度</td>
+                            <td style="width: 20%">研究时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{list id="4" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                        {volist name="project" id="vo"}
+                        <tr>
+                            <td><a href="{$vo.projectSrc}">{$vo.name}</a></td>
+                            <td>{$vo.source}</td>
+                            <td>{$vo.no}</td>
+                            <td>{$vo.progress}</td>
+                            <td>{$vo.date}</td>
+                        </tr>
+                        {/volist}
+                        <!--{/list}-->
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+       <div  class="pagelist" align="center" class="gk3">
+           {$page}
+        </div>
+
+    </div>
+
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

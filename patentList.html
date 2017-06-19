@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="yangkang">
+    <meta name="renderer" content="webkit">
+    <title></title>
+
+    <!-- core CSS -->
+    <link href="__INDEX__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__INDEX__/css/font-awesome.min.css" rel="stylesheet">
+    <link href="__INDEX__/css/animate.min.css" rel="stylesheet">
+    <link href="__INDEX__/css/prettyPhoto.css" rel="stylesheet">
+    <link href="__INDEX__/css/main.min.css" rel="stylesheet">
+    <link href="__INDEX__/css/responsive.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="__INDEX__/js/html5shiv.js"></script>
+    <script src="__INDEX__/js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="__INDEX__/images/logo.ico">
+</head>
+<body>
+<!-- header -->
+{include file="Public/header" /}
+<!-- header -->
+<section id="program">
+    <div class="container">
+        <!-- 论文 -->
+        <div class="row">
+            <div class="title title1">
+                <h3>发明专利</h3>
+            </div>
+
+            <div class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="padding:10px 50px">
+                <div class="table-responsive">
+                    <table class="table table-hover center table-bordered">
+                        <thead>
+                        <tr>
+                            <td style="width: 25%">专利名称</td>
+                            <td style="width: 15%">专利号</td>
+                            <td style="width: 10%">进度</td>
+                            <td style="width: 10%">参与人员</td>
+                            
+                            <td style="width: 20%">时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{list id="4" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                        {volist name="patent" id="vo"}
+                        <tr>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.number}</td>
+                            <td>{$vo.progress}</td>
+                            <td>{$vo.participator}</td>
+                            <td>{$vo.pub_time}</td>
+                        </tr>
+                        {/volist}
+                        <!--{/list}-->
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div align="center" class="gk3">
+           {$page}
+        </div>
+
+    </div>
+
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+<script src="__INDEX__/js/jquery.js"></script>
+<script src="__INDEX__/js/bootstrap.min.js"></script>
+<script src="__INDEX__/js/jquery.prettyPhoto.js"></script>
+<script src="__INDEX__/js/jquery.isotope.min.js"></script>
+<script src="__INDEX__/js/main.js"></script>
+<script src="__INDEX__/js/wow.min.js"></script>
+</body>
+</html>

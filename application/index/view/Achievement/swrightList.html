@@ -1,0 +1,58 @@
+<!-- header -->
+{include file="Public/header" /}
+ <link href="__INDEX__/css/paginate.css" rel="stylesheet">
+<!-- header -->
+<section id="program">
+    <div class="container">
+        <!-- 论文 -->
+        <div class="row">
+            <div class="title title1">
+                <h3>软件著作权</h3>
+            </div>
+
+            <div class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="padding:10px 50px">
+                <div class="table-responsive">
+                    <table class="table table-hover center table-bordered">
+                        <thead>
+                        <tr>
+                            <td style="width: 25%">软件名称</td>
+                            <td style="width: 15%">著作人</td>
+                            <td style="width: 15%">完成时间</td>
+                            <td style="width: 15%">首次发表时间</td>
+                            <td style="width: 10%">权利取得方式</td>
+                            <td style="width: 10%">权利范围</td>
+                            <td style="width: 10%">登记号</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{list id="4" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                        {volist name="swright" id="vo"}
+                        <tr>
+                            <td><a href="{:url('Achievement/swDisplay',array('id'=>$vo.id))}">{$vo.title}</a></td>
+                            <td>{$vo.participator}</td>
+                            <td>{$vo.finish_time}</td>
+                            <td>{$vo.pub_time}</td>
+                            <td>{$vo.way}</td>
+                            <td>{$vo.range}</td>
+                            <td>{$vo.register_id}</td>
+                        </tr>
+                        {/volist}
+                        <!--{/list}-->
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div  class="pagelist" align="center" class="gk3">
+           {$page}
+        </div>
+
+    </div>
+
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>

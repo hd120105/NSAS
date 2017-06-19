@@ -1,0 +1,67 @@
+<!--修改个人信息-->
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+  <div class="layui-tab-content">
+    <form class="layui-form" action="" >
+        {volist name ="user" id="vo"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input" style="width:300px;" id="username" value="{$vo.username}" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">邮箱</label>
+          <div class="layui-input-block">
+               <input type="text" name="email"  autocomplete="off" lay-verify="email" placeholder="请输入邮箱号" class="layui-input" style="width:300px;" id="email" value="{$vo.email}" >
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">电话</label>
+          <div class="layui-input-block">
+              <input type="text" name="tel"  autocomplete="off" placeholder="请输入电话" class="layui-input" style="width:300px;" id="tel" value="{$vo.tel}">
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit="" lay-filter="user_edit">立即提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+      {/volist}
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$ = layui.jquery;
+  //监听提交
+  form.on('submit(user_edit)', function(data){
+    var param = data.field;
+    var index =  parent.layer.getFrameIndex(window.name);
+     $.post('{:url("Login/edit")}',param,function(data){
+      if(data.code == 200){
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          parent.layer.close(index);
+          parent.location.reload();
+        });
+      }else if(data.code==401){
+         layer.tips(data.msg, $("#username"));
+         $('#username').focus(); 
+      }else if(data.code==402){
+        layer.tips(data.msg, $("#email"));
+         $('#email').focus(); 
+      }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    return false;
+  });
+});
+</script>
+{include file="public/footer" /}

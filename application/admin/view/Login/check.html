@@ -1,0 +1,51 @@
+<!--查看个人信息-->
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+    <div class="layui-tab-content">
+    <form class="layui-form" action="" >
+        {volist name ="user" id="vo"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" name="username" lay-verify="required" autocomplete="off" placeholder="无" class="layui-input" style="width:300px;" id="username" value="{$vo.username}" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+              <input type="text" name="email"  autocomplete="off" lay-verify="email" placeholder="无" class="layui-input" style="width:300px;" id="email" value="{$vo.email}" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+              <input type="text" name="tel"  autocomplete="off" placeholder="无" class="layui-input" style="width:300px;" id="tel" value="{$vo.tel}" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最后登录IP</label>
+            <div class="layui-input-block">
+              <input type="text" name="IP"  autocomplete="off"  placeholder="无" class="layui-input" style="width:300px;" id="IP" value="{$vo.ip}" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录次数</label>
+            <div class="layui-input-block">
+              <input type="text" name="hits"  autocomplete="off" placeholder="无" class="layui-input" style="width:300px;" id="IP" value="{$vo.hits}" disabled>
+            </div>
+        </div>
+        {/volist}
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$ = layui.jquery;
+});
+</script>
+
+{include file="public/footer" /}

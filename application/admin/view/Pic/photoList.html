@@ -1,0 +1,144 @@
+ {include file="public/toper" /}
+ <style>
+   #picDisplay{
+    float:left;
+}
+#picDiv{
+     width:280px;
+     height:280px;
+     overflow:hidden;
+     float:left; 
+     display: table-cell;
+     vertical-align: middle;
+     text-align: center;
+     border:1px solid #e2e2e2;
+     margin:30px
+}
+#pic{
+    width: auto;  
+    height: auto;  
+    max-width: 100%;  
+    max-height: 100%;
+}
+
+ </style>
+	<div class="layui-tab layui-tab-brief main-tab-container">
+    <form class="layui-form layui-form-pane search-form" style="margin:10px" action="{:url('Member/teacher')}" method="post">
+         <a class="layui-btn layui-btn-warm add_btn" ><i class="layui-icon">&#xe608;</i>添加图片</a>
+       
+      </form>
+      <form>
+        {volist name="pic" id="vo"}
+        <table id="picDisplay" style="float:left">
+          <tr>
+            <td>
+              <div id="picDiv" style="">
+                <img id="pic" src="{$vo.picurl}"  title="{$vo.content}" style=""/>
+             </div>
+            </td>
+        </tr>
+          {if condition="$vo.status eq 1"}<!--已经推送-->
+          <tr><td  style="text-align:center"><a href="javascript:;" class="stop_btn" style="font-size: 20px; color: #dddddd;" title="回收" id="{$vo.id}" stauts="{$vo.status}"><i class="layui-icon">&#xe609; </a>|<a  href="javascript:;" class="del_btn" style="font-size: 20px; color: #1E9FFF;" title="删除"  id="{$vo.id}" stauts="{$vo.status}"><i class="layui-icon"> &#xe640;</a> </td></tr>
+          {else/}
+          <tr><td  style="text-align:center"><a href="javascript:;" class="pub_btn" style="font-size: 20px; color: #1E9FFF;" title="推送"  id="{$vo.id}" stauts="{$vo.status}"><i class="layui-icon">&#xe609; </a>|<a href="javascript:;" class="del_btn" style="font-size: 20px; color: #1E9FFF;" title="删除"  id="{$vo.id}" stauts="{$vo.status}"><i class="layui-icon"> &#xe640;</a> </td></tr>
+          {/if}
+        </table>
+        {/volist}
+         
+      </form>
+     
+</div>
+<div class="pagelist">
+    	{$page}
+    	</div>
+<script>
+layui.use(['element','form','laypage','layer'],function(){
+	var element=layui.element()
+	,form = layui.form()
+	,$ = layui.jquery
+	,laypage=layui.laypage
+	,layer=layui.layer;
+    //添加
+    $('.add_btn').click(function(){
+       var index = layer.open({
+       type: 2,
+       area: ['700px', '530px'],
+       title:'添加照片',
+       fixed: false, //不固定
+       maxmin: true,
+       content: '{:url("Pic/Add")}'
+     });
+     layer.fall(index);
+    });
+    //删除文章
+	$('.del_btn').click(function(){
+      var id = $(this).attr('id');
+      var status = $(this).attr('status');
+      if(status==1){
+    		layer.msg('您的消息已经推送,请先回收之后再修改', {icon: 5});
+    	}else{
+      layer.confirm('确定删除这条?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Pic/Del")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+    }
+    });
+
+    //推送文章
+    $('.pub_btn').click(function(){
+      var id = $(this).attr('id');
+      layer.confirm('确定推送这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Pic/Pub")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+    });
+
+    //回收文章
+    $('.stop_btn').click(function(){
+      var id = $(this).attr('id');
+      layer.confirm('确定回收这条消息?', function(index){
+      loading = layer.load(2, {
+      shade: [0.2,'#000'] //0.2透明度的白色背景
+      });
+      $.post('{:url("Pic/stop")}',{'id':id},function(data){
+        if(data.code == 200){
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+         location.reload();//do something
+         });
+        }else{
+         layer.close(loading);
+         layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+     });
+    });
+  });
+
+</script>
+{include file="public/footer" /}
+ 

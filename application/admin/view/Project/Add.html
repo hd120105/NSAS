@@ -1,0 +1,101 @@
+{include file="public/toper" /}
+<div class="layui-tab layui-tab-brief main-tab-container">
+    <div class="layui-tab-content">
+      <form class="layui-form" action="" style="height:500px;">
+        <div class="layui-form-item">
+          <label class="layui-form-label">项目名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入名称" class="layui-input" style="width:300px;" id="name">
+          </div>
+          </div>
+          <div class="layui-form-item">
+           <label class="layui-form-label">项目来源</label>
+           <div class="layui-input-block">
+            <input type="text" name="source" lay-verify="source" autocomplete="off" placeholder="请输入来源" class="layui-input" style="width:300px;" id="source">
+          </div>
+        </div>
+         <div class="layui-form-item">
+           <label class="layui-form-label">项目编号</label>
+           <div class="layui-input-block">
+            <input type="no" name="no"  autocomplete="off" placeholder="请输入编号" class="layui-input" style="width:300px;" id="no">
+          </div>
+        </div>
+         <div class="layui-form-item">
+           <label class="layui-form-label">研究时间</label>
+           <div class="layui-input-block">
+            <input type="text" name="date"  autocomplete="off" placeholder="请输入时间" class="layui-input" style="width:300px;" id="date">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">进度</label>
+            <div class="layui-input-inline">
+             <select name="progress" lay-filter="progress" id="progress">
+               <option value="">请选择类型</option>
+               <option value="0">已申请</option>
+               <option value="1">已获批</option>
+             </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+           <label class="layui-form-label">项目地址</label>
+           <div class="layui-input-block">
+            <input type="text" name="projectSrc"  autocomplete="off" placeholder="请输入项目地址" class="layui-input" style="width:300px;" id="projectSrc" >
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+           <button class="layui-btn" lay-submit="" lay-filter="project_add">立即提交</button>
+           <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$ = layui.jquery;
+ 
+  
+  //图片上传
+  layui.upload({
+    url: '上传接口url'
+    ,success: function(res){
+    console.log(res); //上传成功返回值，必须为json格式
+    }
+  });    
+  
+  //监听提交
+  form.on('submit(project_add)', function(data){
+    var param = data.field;
+    var index =  parent.layer.getFrameIndex(window.name);
+    console.log(JSON.stringify(data.field));
+    console.log(JSON.stringify(index));
+    if(''==param['name']){
+        layer.tips('标题不能为空', $("#name"));
+        $('#name').focus(); 
+        return false;
+    }
+     $.post('{:url("Project/Add")}',param,function(data){
+      if(data.code == 200){
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          parent.layer.close(index);
+         parent.location.href="{:url('Project/projectlist')}";
+        });
+      }else{
+        
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    return false;
+  });
+})
+</script>
+
+{include file="public/footer" /}

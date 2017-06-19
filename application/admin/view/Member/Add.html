@@ -1,0 +1,146 @@
+{include file="public/toper" /}
+<style>
+.file {
+  position: relative;
+  display: inline-block;
+  background: #D0EEFF;
+  border: 1px solid #99D3F5;
+  border-radius: 1px;
+  padding: 4px 12px;
+  overflow: hidden;
+  color: #1E88C7;
+  text-decoration: none;
+  text-indent: 0;
+  line-height: 30px;
+}
+.file_input{
+  height:38px;
+  border: 1px solid #e2e2e2
+}
+.layui-upload-button{
+  display:none;
+}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+
+  <div class="layui-tab-content">
+    <form class="layui-form" action="" enctype="multipart/form-data" >
+        <div class="layui-form-item">
+          <label class="layui-form-label">展示图片</label>
+          <div class="layui-input-block">
+          <!--<input class="file-file" type="file" name="pic" id="pic" size="28" onchange="document.getElementById('textfield').value=this.value" /> -->
+            <input type="text" class="file_input" id="f_file"><input type="button" value="上传图片" class="file" onClick="t_file.click()">
+            <input type="file" name="file" class="layui-upload-file" id="t_file" onchange="f_file.value=this.value" style="display:none">
+          </div>
+        </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+           <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入名称" class="layui-input" style="width:300px;" id="name">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-inline">
+          <select name="typeSelected" lay-filter="typeSelected" id="typeSelected">
+            <option value="">请选择类型</option>
+            <option value="0">老师</option>
+            <option value="1">学生</option>
+            <option value="2">已毕业学生</option>
+          </select>
+        </div>
+      </div> 
+      <div name="teacher" id="teacher" style="display:none">
+      {include file="Member/teacherinfo" /}
+      </div>
+      <div name="student" id="student" style="display:none">
+      {include file="Member/studentinfo" /}
+      </div>
+      <div name="graduate" id="graduate" style="display:none">
+      {include file="Member/graduateinfo" /}
+      </div>
+      <div class="layui-form-item" style="margin-bottom:80px">
+        <div class="layui-input-block">
+          <button class="layui-btn " lay-submit="" lay-filter="member_add">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+   UE.getEditor('content'); 
+</script> 
+<script type="text/javascript">
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$ = layui.jquery;
+  var  picSrc=""
+ layui.upload({
+    url: '{:url("Member/upload")}' //上传接口
+    ,ext:'jpg|png|git'
+    ,type:'image'
+    ,success: function(res){ //上传成功后的回调
+      picSrc = res['src'];
+    }
+  });
+  //监听提交
+  form.on('submit(member_add)', function(data){
+   var param = data.field;
+   var index =  parent.layer.getFrameIndex(window.name);  
+   param['url']=picSrc;
+  //  if($('#content').val() == ""){
+  //    param['content'] = "";
+  //  }
+  $.post('{:url("Member/Add")}',param,function(data){
+    if(data.code == 200){
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+        parent.layer.close(index);
+        if(param['typeSelected']==0){
+          parent.location.href="{:url('Member/teacher')}";
+        }else if(param['typeSelected']==1){
+          parent.location.href="{:url('Member/student')}";
+        }else{
+          parent.location.href="{:url('Member/graduate')}";
+        }
+      });
+    }else{
+      layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+    }
+  });
+  return false;
+});
+form.on('select(typeSelected)',function(data){
+  var type=$('#typeSelected').val();
+  teacher = {'教授':'教授','副教授':'副教授','讲师':'讲师','工程师':'工程师'};
+  master = {'一年级':'一年级','二年级':'二年级','三年级':'三年级'};
+  if(type==0) //老师
+  {
+    $("#student").css('display','none'); 
+    $("#graduate").css('display','none'); 
+    $("#teacher").css('display','block'); 
+    form.render();//更新渲染
+  }else if(type==1) //学生
+  {
+    $("#graduate").css('display','none'); 
+    $("#teacher").css('display','none'); 
+    $("#student").css('display','block'); 
+    form.render();
+  }else if(type==2) //硕士
+  {
+    $("#student").css('display','none'); 
+    $("#teacher").css('display','none'); 
+    $("#graduate").css('display','block'); 
+    form.render();
+  }
+});
+});
+
+</script>
+
+{include file="public/footer" /}

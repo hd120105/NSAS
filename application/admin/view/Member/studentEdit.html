@@ -1,0 +1,190 @@
+{include file="public/toper" /}
+<style>
+  .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 1px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 30px;
+}
+.file_input{
+    height:38px;
+    border: 1px solid #e2e2e2
+}
+.layui-upload-button{
+    display:none;
+}
+</style>
+<div class="layui-tab layui-tab-brief main-tab-container">
+ 
+  <div class="layui-tab-content">
+    <form class="layui-form" action="" >
+      {volist name="member" id = "vo"}
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-block">
+          <!--<input class="file-file" type="file" name="pic" id="pic" size="28" onchange="document.getElementById('textfield').value=this.value" /> -->
+          <input type="text" class="file_input" id="f_file" value="{$vo.pic}"><input type="button" value="上传头像" class="file" onClick="t_file.click()">
+          <input type="file" name="file" class="layui-upload-file" id="t_file" onchange="f_file.value=this.value" style="display:none">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+           <input type="text" name="name" lay-verify="name" autocomplete="off" placeholder="请输入名称" class="layui-input" style="width:300px;" id="name" value="{$vo.name}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-inline">
+          <select name="typeSelected" lay-filter="typeSelected" id="typeSelected">
+            <option value="">请选择类型</option>
+            <option value="0" >老师</option>
+            <option value="1" selected>学生</option>
+            <option value="2">毕业生</option>    
+          </select>
+        </div>
+      </div>
+      <div name="student" id="student" >
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="padding-right:10px">学历</label>
+          <div class="layui-input-block">
+             <input type="text" name="educate1" lay-verify="educate1" autocomplete="off" placeholder="请输入学历" class="layui-input" style="width:300px;" id="educate1" value="{$vo.educate}">
+        </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="padding-right:10px">年级</label>
+          <div class="layui-input-block">
+             <input type="text" name="degree" lay-verify="degree" autocomplete="off" placeholder="请输入年级(一年级/二年级/三年级)" class="layui-input" style="width:300px;" id="degree" value="{$vo.degree}">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="padding-right:10px">专业</label>
+          <div class="layui-input-block">
+             <input type="text" name="major1" lay-verify="major1" autocomplete="off" placeholder="请输入专业" class="layui-input" style="width:300px;" id="major1" value="{$vo.major}">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="padding-right:10px">研究方向</label>
+          <div class="layui-input-block">
+              <input type="text" name="area1" lay-verify="area1" autocomplete="off" placeholder="请输入研究方向" class="layui-input" style="width:300px;" id="area1" value="{$vo.area}">
+          </div>
+        </div>
+        <div class="layui-form-item" >
+          <label class="layui-form-label" style="padding-right:10px">邮箱</label>
+          <div class="layui-input-block">
+              <input type="text" name="email1" autocomplete="off" placeholder="请输入邮箱" class="layui-input" style="width:300px;" id="email1" value="{$vo.email}">
+          </div>
+        </div>
+      </div>
+      <div name="teacher" id="teacher" style="display:none">
+      {include file="Member/teacherinfo" /}
+      </div>
+      <div name="graduate" id="graduate" style="display:none">
+      {include file="Member/graduateinfo" /}
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn submit_btn" lay-submit="" id="{$vo.id}" lay-filter="member_edit">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+      {/volist}
+      </form>
+  </div>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.config.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script> 
+<script type="text/javascript">
+ UE.getEditor('content'); 
+</script> 
+<script type="text/javascript">
+
+layui.use(['element', 'form', 'upload', 'layedit', 'laydate'], function(){
+  var element = layui.element()
+  ,form = layui.form()
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate
+  ,$ = layui.jquery;
+  var  picSrc=""
+  layui.upload({
+    url: '{:url("Member/upload")}' //上传接口
+    ,ext:'jpg|png|git'
+    ,type:'image'
+    ,success: function(res){ //上传成功后的回调
+      if(res['src']==''){
+        picSrc=$('#f_file').val();
+      }else{
+        picSrc = res['src'];
+      }
+    }
+  });
+  
+  //监听提交
+  form.on('submit(member_edit)', function(data){
+    var param = data.field;
+    var id = $('.submit_btn').attr('id');
+    param['id'] = id;
+    if(picSrc=='')
+    {
+      picSrc=$('#f_file').val();
+    }
+    param['url'] = picSrc;
+    var index =  parent.layer.getFrameIndex(window.name);
+    if(''==param['member']){
+        layer.tips('标题不能为空', $("#member"));
+        $('#member').focus(); 
+        return false;
+    }
+     $.post('{:url("Member/edit")}',param,function(data){
+      if(data.code == 200){
+        layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+          parent.layer.close(index);
+         parent.location.href="{:url('Member/student')}";
+        });
+      }else{
+        
+        layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+      }
+    });
+    return false;
+  });
+ form.on('select(typeSelected)',function(data){
+    var type=$('#typeSelected').val();
+    console.log(type);
+   // alert(type);
+    if(type==0) //老师
+    {
+      $("#student").css('display','none'); 
+      $("#graduate").css('display','none'); 
+      $("#teacher").css('display','block'); 
+       
+      form.render();//更新渲染
+    }else if(type==1) //学生
+    {
+      $("#graduate").css('display','none'); 
+      $("#teacher").css('display','none'); 
+      $("#student").css('display','block'); 
+   
+  
+      form.render();
+    }else if(type==2) //硕士
+    {
+      $("#student").css('display','none'); 
+      $("#teacher").css('display','none'); 
+      $("#graduate").css('display','block'); 
+      form.render();
+    }
+  })
+})
+</script>
+
+{include file="public/footer" /}

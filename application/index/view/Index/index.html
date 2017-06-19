@@ -1,0 +1,189 @@
+
+<body class="homepage">
+<link href="__INDEX__/css/global.css" rel="stylesheet" type="text/css">
+{include file="Public/header" /}
+
+
+<section id="main-slider" class="no-margin">
+<div class="bannerbox">
+
+	<div class="Homebanner">
+		<ul>
+            {volist name="pic" id="vo"}
+			<li class="Load"><img src="{$vo.picurl}" alt="">
+				<div class="Homebannertext">
+					<dl class="bannerthree clearfix">
+						<dt class="bannereffect bannertime"><img src="" alt=""></dt>
+						<dd class="bannereffect bannertime1">
+							
+							 <h3>持续追求更高品质</h3>
+							 <p>{$vo.content}</p>
+						</dd>
+					</dl>
+				</div>
+			</li>
+            {/volist}
+		</ul>
+		<div class="Homeleft"><</div>
+		<div class="Homeright">></div>
+		<div class="Homedot"><a href="javascript:;" class="cur">1</a><a href="javascript:;">2</a><a href="javascript:;">3</a></div>
+	</div>
+    
+</div>
+</div>
+
+</section><!--/#main-slider-->
+
+<section id="news">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 wow fadeInDown">
+
+                <h2 class="news-title"><i class="fa fa-newspaper-o"></i> 近期新闻<span class="pull-right"><a href="{:url('News/newsList')}" class="all-news">更多</a></span></h2>
+
+
+                <ul class="list-group">
+                    {volist name="news" id="vo"}
+                    <li class="list-group-item">
+                            <div class="title">
+                                <a href="{:url('News/newsDisplay',array('id'=>$vo.id))}">{$vo.title}</a>
+
+                            </div>
+                            <span class="pull-right" style="margin-top: -23px">{$vo.createtime}</span>
+
+                    </li>
+                    {/volist}
+                </ul>
+
+            </div><!--/.col-sm-6-->
+
+            <div class="col-xs-12 col-sm-5 col-sm-offset-1 wow fadeInDown">
+                <div class="testimonial">
+                    <h2 class="lab-introduce">实验室介绍</h2>
+                    <div class="media testimonial-inner">
+                        <!--{list id="2" page="1" pagesize="1"}-->
+
+                        <div class="media-body">
+                            <a href="#" onclick="return false;">
+                                {volist name="lab" id="vo"}
+                                <p>
+                                  {$vo.introduce}
+                                </p>
+                                {/volist}
+                                <p>
+                                   
+                                </p>
+                            </a>
+                        </div>
+
+                        <!--{/list}-->
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div><!--/.row-->
+    </div><!--/.container-->
+</section><!--/#news-->
+
+<section id="achievement" >
+    <div class="container">
+
+        <div class="row">
+            <div class="center wow fadeInDown" >
+                <h2>成果展示</h2>
+            </div>
+                <!--{list id="26" page="1" pagesize="6"}-->
+                 {volist name="project" id="vo"}
+                <div class="col-md-4 col-sm-6" data-wow-duration="1000ms" data-wow-delay="600ms">
+                    <div class="achievement-wrap wow fadeInDown">
+                       
+                        <div class="achievement-inner">
+                            <h2 class="title"><i class="fa fa-book"></i><a href="">{$vo.name}</a></h2>
+                            <h3></h3>
+                        </div>
+                      
+                    </div>
+                </div><!--/.col-md-4-->
+                 {/volist}
+                <!--{/list}-->
+        </div><!--/.row-->
+    </div><!--/.container-->
+</section><!--/#feature-->
+
+
+
+<section id="recent-works">
+    <div class="container">
+        <div class="center wow fadeInDown">
+            <h2>活动剪影</h2>
+        </div>
+
+        <div class="row">
+            {volist name="photo" id="vo"}
+            <!--{list id="25" page="1" pagesize="8"}-->
+            <div class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <div class="recent-work-wrap">
+                        <img class="img-responsive" src="{$vo.picurl}" alt="">
+                        <div class="overlay">
+                            <div class="recent-work-inner">
+                                <h3><a href=""></a> {$vo.content}</h3>
+                                <p></p>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/volist}
+            <!--{/list}-->
+        </div>
+    </div>
+</section>
+
+
+<section id="contact-info" class="no-margin">
+    <!--{list id="3" page="1" pagesize="1"}-->
+    <div class="gmap-area" >
+        <div class="container">
+            <div class="row">
+                <div class="center wow fadeInDown">
+                    <h2>我们在这里</h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="gmap">
+                        <iframe src="http://api.map.baidu.com/staticimage?width=400&height=300&center=108.880436,34.151049&zoom=18&markers=108.879627,34.151019&markerStyles=l,0" frameBorder=0 height=600 width=500 scrolling=no></iframe>
+                    </div>
+                </div>
+                {volist name="lab" id = "vo"}
+                <div class="col-md-6 map-content">
+                    <ul class="row">
+                        <li class=" ">
+                            <address>
+                                <h5></h5>
+                                <p>校区地址：陕西省西安市长安区学府大道</p>
+                                <p>实验室地址：{$vo.address}</p>
+                                <p>查看百度地图：<a href="http://j.map.baidu.com/1SbiB">点击这里</a></p>
+                                <p>邮编：710127<br></p>
+                                <p>邮箱：{$vo.email}</p>
+                                <p>联系电话：{$vo.tel}</p>
+                            </address>
+
+                        </li>
+                    </ul>
+                </div>
+                {/volist}
+            </div>
+        </div>
+    </div>
+    <!--{/list}-->
+</section>  <!--/gmap_area -->
+
+{include file="Public/footer" /}
+<script type="text/javascript" src="__INDEX__/js/banner.js"></script>
+
+</body>
+
+</html>

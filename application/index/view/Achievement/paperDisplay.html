@@ -1,0 +1,48 @@
+
+{include file="Public/header" /}
+ <link href="__INDEX__/css/paginate.css" rel="stylesheet">
+<!-- header -->
+<section id="blog">
+{volist name="display" id="vo"}
+ <div class="container" style="margin-top: 50px">
+            <div class="blog">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="blog-item">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-2 text-center">
+
+                                    <div class="entry-meta">
+                                        <span id="publish_date">{$vo.pub_time}</span>
+                                        <span><i class="fa fa-user"></i> <a href="#">{$vo.pub_unit}</a></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-10 blog-content">
+                                    <h2 class="center">{$vo['title']}</h2>
+                                    <p class="center">{$vo['participator']}</p>
+                                     
+                                    <div class="blog-content">
+                                        <p>关键词：{$vo.keywords}</p>
+                                        <p>分类号：{$vo.typeID}</p>
+                                        <p>DOI：{$vo.DOI}</p>
+                                        <p>基金：{$vo.foundation}</p>
+                                        <p>摘要：{$vo.abstract}</p>
+                                    </div>
+                                    <div class="file"><a href="{$vo.fileurl}">论文下载：{$vo.title}</a></div>
+                                </div>
+                            </div>
+                        </div><!--/.blog-item-->
+                        <div id="contact-page clearfix">
+                            <div class="status alert alert-success" style="display: none"></div>
+                        </div><!--/#contact-page-->
+                    </div><!--/.col-md-8-->
+                </div><!--/.row-->
+            </div><!--/.blog-->
+        </div><!--/.container-->
+    {/volist}
+</section>
+<!-- footer -->
+{include file="Public/footer" /}
+<!-- footer -->
+</body>
+</html>
