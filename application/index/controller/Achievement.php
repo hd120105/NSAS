@@ -5,6 +5,8 @@ use think\Paginator;
 class Achievement extends Controller{
     public function paperList(){
         $paper = db('paper')->order('id desc')->where(['status'=>1])->paginate(5);
+        $count = db('paper')->count();
+        $this->assign('count',$count);
         $page  = $paper->render();
         $this->assign('paper',$paper);
         $this->assign('page',$page);
@@ -13,6 +15,8 @@ class Achievement extends Controller{
     public function patentList(){
          $patent = db('patent')->order('id desc')->where(['status'=>1])->paginate(10);
          $page   = $patent->render();
+         $count = db('patent')->count();
+        $this->assign('count',$count);
          $this->assign('patent',$patent);
          $this->assign('page',$page);
          return $this->fetch('Achievement/patentList');
@@ -20,6 +24,8 @@ class Achievement extends Controller{
     public function swrightList(){
          $swright = db('swright')->order('id desc')->where(['status'=>1])->paginate(5);
          $page   = $swright->render();
+         $count = db('swright')->count();
+         $this->assign('count',$count);
          $this->assign('swright',$swright);
          $this->assign('page',$page);
          return $this->fetch('Achievement/swrightList');
@@ -27,6 +33,8 @@ class Achievement extends Controller{
     public function projectList(){//项目
          $project = db('project')->order('id desc')->where(['status'=>1])->paginate(10);
          $page = $project->render();
+         $count = db('project')->count();
+         $this->assign('count',$count);
          $this->assign('project',$project);
          $this->assign('page',$page);
          return $this->fetch('Achievement/projectList');
@@ -34,6 +42,8 @@ class Achievement extends Controller{
    public function prizeList(){//奖项
          $prize = db('prize')->order('id desc')->where(['status'=>1])->paginate(10);
          $page = $prize->render();
+         $count = db('prize')->count();
+         $this->assign('count',$count);
          $this->assign('prize',$prize);
          $this->assign('page',$page);
          return $this->fetch('Achievement/prizeList');

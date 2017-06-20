@@ -8,7 +8,7 @@
         <!-- 论文 -->
         <div class="row">
             <div class="title title1">
-                <h3>专利</h3>
+                <h3 style="line-height:15px">专利</h3>
             </div>
 
             <div class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="padding:10px 50px">
@@ -16,24 +16,27 @@
                     <table class="table table-hover center table-bordered">
                         <thead>
                         <tr>
-                            <th style="width:25%">标题</th>
-                            <th style="width:25%">发明人</th>
-                            <th style="width:10%">申请人</th>
-                            <th style="width:20%">专利号</th>
-                            <th style="width:20%">主分类号</th>
+                            <th style="width:20%">标题</th>
+                            <th style="width:15%">发明人</th>
+                            <th style="width:10%">专利号</th>
+                            <th style="width:10%">分类号</th>
                         </tr>
                         </thead>
                         <tbody>
                         <!--{list id="4" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                        {if condition="$count neq 0"}
                         {volist name="patent" id="vo"}
                         <tr>
-                               <td title="{$vo.title}"><a href="{$vo.soopat}">{$vo.title}</a></td>
-                                <td title="{$vo.inventor}"><a href="#">{$vo.inventor}</a></td>
-                                <td title="{$vo.applicator}"><a href="#">{$vo.applicator}</a></td>
-                                <td title="{$vo.patent_id}"><a href="#">{$vo.patent_id}</a></td>
-                                <td title="{$vo.type_id}"><a href="#">{$vo.type_id}</a></td>
+                            <td title="{$vo.title}"><a href="{$vo.detailed}">{$vo.title}</a></td>
+                            <td title="{$vo.inventor}"><a href="#">{$vo.inventor}</a></td>
+                            <td title="{$vo.applicator}"><a href="#">{$vo.applicator}</a></td>
+                            <td title="{$vo.patent_id}"><a href="#">{$vo.patent_id}</a></td>
+                            <td title="{$vo.type_id}"><a href="#">{$vo.type_id}</a></td>
                         </tr>
                         {/volist}
+                        {else/}
+                        <td style="width:100%;text-align:center" colspan="4">暂无数据</td>
+                        {/if}
                         <!--{/list}-->
                         </tbody>
                         

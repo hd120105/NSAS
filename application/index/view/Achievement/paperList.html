@@ -8,7 +8,7 @@
         <!-- 论文 -->
         <div class="row">
             <div class="title title1">
-                <h3>科研论文</h3>
+                <h3 style="line-height:15px">科研论文</h3>
             </div>
 
             <div class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="padding:10px 50px">
@@ -16,32 +16,27 @@
                     <table class="table table-hover center table-bordered">
                         <thead>
                         <tr>
-                            <td style="width: 25%">论文名称</td>
-                            <td style="width: 15%">期刊/会议名称</td>
-                            <td style="width: 10%">检索级别</td>
-                            <td style="width: 10%">进度</td>
-                            <td style="width: 20%">参与人员</td>
-                            <td style="width: 20%">时间</td>
-                        </tr>
+                            <th style="width:15%">标题</th>
+                            <th style="width:15%">参与者</th>
+                            <th style="width:10%">会议/期刊</th>
+                            <th style="width:10%">检索级别</th>
+                                                </tr>
                         </thead>
                         <tbody>
                         <!--{list id="4" page="$page" pagesize="$pagesize" return="r" columns="title,catids,appid,published,description,siteid,digg,pv,shares,editor,comments,tags,channel_pc,channel_wap,channel_pad,channel_phone"}-->
+                        {if condition="$count neq 0"}
                         {volist name="paper" id="vo"}
                         <tr>
-                            <td><a href="{$vo.cnki}">{$vo.title}</a></td>
-                            <td>{$vo.pub_unit}</td>
-                            <td>{$vo.number}</td>
-                            {if condition="$vo.progress eq 0"}
-                            <td>已投稿</td>
-                            {elseif condition="$vo.progress eq 1" /}
-                            <td>待刊出</td>
-                            {else /}
-                            <td>已刊出</td>
-                            {/if}
-                            <td>{$vo.participator}</td>
-                            <td>{$vo.pub_time}</td>
+                            <td title="{$vo.title}"><a href="{$vo.detailed}">{$vo.title}</a></td>
+                            <td title="{$vo.participator}"><a href="#">{$vo.participator}</a></td>
+                            <td title="{$vo.periodical}"><a href="#">{$vo.periodical}</a></td>
+                            <td title="{$vo.level}"><a href="#">{$vo.level}</a></td>
+
                         </tr>
                         {/volist}
+                        {else/}
+                        <td style="width:100%;text-align:center" colspan="4">暂无数据</td>
+                        {/if}
                         <!--{/list}-->
                         </tbody>
                         
